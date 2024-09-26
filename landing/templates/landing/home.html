@@ -1,0 +1,91 @@
+{% extends 'landing/navbar.html' %}
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+{% block title %} Home {% endblock title %}
+<!DOCTYPE html>
+<html lang="en">
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<div class="h-screen w-screen">
+    {% include 'landing/navbar.html' %}  
+
+
+    <div class="w-full h-2/3 flex overflow-hidden ">
+        <div class="h-full flex flex-row flex-nowrap transition-all duration-500 ease-in-out" id="slider-inner">
+            
+
+            <!-- Slide 1 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+                <img src="{% static 'img/corp_img1.jpg' %}" alt="" class="w-full h-full object-cover opacity-80">
+                <div class="w-4/5 h-auto bg-black bg-opacity-40 flex flex-col p-6 pt-3 ml-4 z-10 gap-y-10 text-wrap self-center absolute bottom-10
+                            lg:w-3/5 lg:ml-10
+                            xl:h-auto 2xl:h-auto">
+            
+                    <p class="text-white text-4xl font-extrabold
+                                sm:text-5xl">
+                        Esta es la página de inicio con la primera imagen
+                    </p>
+                    <p class="text-white text-xl font-semibold
+                                sm:text-4xl sm:font-normal
+                                2xl:text-5xl">
+                        UNO Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Slide 1 -->
+
+            <!-- Slide 2 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+                <img src="{% static 'img/corp_img2.jpg' %}" alt="" class="w-full h-full object-cover opacity-80">
+                <div class="w-4/5 h-auto bg-black bg-opacity-40 flex flex-col p-6 pt-3 ml-4 z-10 gap-y-10 text-wrap self-center absolute bottom-10
+                            lg:w-3/5 lg:ml-10
+                            xl:h-auto 2xl:h-auto">
+            
+                    <p class="text-white text-4xl font-extrabold
+                                sm:text-5xl">
+                        Esta es la página de inicio con la primera imagen
+                    </p>
+                    <p class="text-white text-xl font-semibold
+                                sm:text-4xl sm:font-normal
+                                2xl:text-5xl">
+                        UNO Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Slide 2 -->
+
+            <!-- Aqui tiene que haber otra descripcion mas pero no se me ocurre que poner porque la pagina se ve muy vacia sin nada mas. -->
+
+                <!-- <h1> Esto es un placeholder </h1> -->
+
+            <!-- Aqui tiene que haber otra descripcion mas pero no se me ocurre que poner porque la pagina se ve muy vacia sin nada mas. -->
+
+            
+        </div>
+    </div>
+    
+    
+    
+    
+   <script src="{% static 'js/slider.js' %}"></script>
+    
+      
+</div>
+
+
+
+
+
+
+
+
+{% endblock content %}
+</html>

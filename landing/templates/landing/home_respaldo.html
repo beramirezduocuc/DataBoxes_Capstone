@@ -1,0 +1,67 @@
+{% extends 'landing/navbar.html' %}
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+{% block title %} Home {% endblock title %}
+<!DOCTYPE html>
+<html lang="en">
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<div class="h-screen w-screen">
+    {% include 'landing/navbar.html' %}  
+
+
+    <div class="glide h-2/3 relative self-center justify-center flex w-full">
+        <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+                <!-- SLIDE 1 -->
+                <li class="glide__slide h-full w-full">
+                    <div class="w-full h-full bg-black absolute flex opacity-80">
+                        <img src="{% static 'img/corp_img1.jpg' %}" alt="" class="h-full w-full object-contain opacity-65">
+                    </div>
+                    <div class="w-4/5 h-4/6 bg-black bg-opacity-40 flex p-6 pt-3 self-center z-10 flex-col gap-y-10 text-wrap">
+                        <p class="text-white text-4xl font-extrabold">Esta es la página de inicio con la primera imagen</p>
+                        <p class="text-white text-xl font-semibold">UNO Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    </div>
+                </li>
+                <!-- SLIDE 1 -->
+    
+                <!-- SLIDE 2 -->
+                <li class="glide__slide h-full w-full">
+                    <div class="w-full h-full bg-black absolute flex opacity-80">
+                        <img src="{% static 'img/corp_img2.jpg' %}" alt="" class="h-full w-full object-contain opacity-65">
+                    </div>
+                    <div class="w-4/5 h-4/6 bg-black bg-opacity-40 flex p-6 pt-3 self-center z-10 flex-col gap-y-10 text-wrap">
+                        <p class="text-white text-4xl font-extrabold">Esta es la página de inicio con la segunda imagen</p>
+                        <p class="text-white text-xl font-semibold">DOS Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    </div>
+                </li>
+                <!-- SLIDE 2 -->
+            </ul>
+        </div>
+    </div>
+    
+    <script src="{% static 'js/glide.min.js' %}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          new Glide('.glide', {
+              type: 'carousel',
+              autoplay: 3000, // Cambia de slide cada 3 segundos
+              hoverpause: true, // Pausa el autoplay al hacer hover sobre el carrusel
+              animationDuration: 800, // Duración de la animación entre slides
+              perView: 1, // Muestra un slide a la vez
+          }).mount();
+      });
+    </script>
+    
+
+
+
+
+{% endblock content %}
+</html>

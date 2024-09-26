@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}
+
+            {% endblock %}
+    </title>
+    <!-- Tabla de anchos minimos para consideracion de cada medida -->                      
+    <!-- sm: 640px -->
+    <!-- md: 768px -->
+    <!-- lg : 1024px -->
+    <!-- xl: 1280px -->
+    <!-- 2xl: 1536px-->
+    <!-- Sin especificar: [Global(?)]-->
+    <!-- Se programa mobile sin especificar primero, luego se agregan los breakpoints para pantallas mas grandes-->
+</head>
+<body class="bg-blue-100 bg-opacity-20"> 
+    {% block content %}
+    <div class="z-40 w-full content-center justify-center flex">
+                <!-- Barra inferior en menu, solo aparece cuando el usuario esta logeado, si no, no aparece.
+                Barra muestra posibles estados de procesos del usuario.-->
+                <!-- CUANDO USUARIO ESTE LOGIN {div class:"h-40 border-b border-gray-400 "} -->
+
+
+        <!--TODO: no repetir clases (cuando sea posible)-->
+
+        <!-- Contenedor logo-busqueda-opciones -->
+        <div class=" h-16 w-full flex mx-4 border-opacity-50">
+            <a href="{% url 'home' %}" class="h-7 inline-block flex-shrink-0 self-center mr-auto hover:animate-pulse">
+                <img src="{% static 'img/github_logo.png' %}" alt="home" class="h-7 inline-block flex-shrink-0 self-center mr-auto">
+            </a>
+            <a href="{% url 'login' %}" class="h-7 inline-block flex-shrink-0 self-center ml-auto">
+                <img src="{% static 'img/user.png' %}" alt="login" class="h-7 inline-block flex-shrink-0 self-center ml-auto"> <!--Este se comporta distinto-->
+            </a>
+            <a href="#" class="h-7 inline-block flex-shrink-0 self-center ml-5 z-20" id="menuBtn">
+                <img src="{% static 'img/three_dots.png' %}" alt="options" class="h-7 inline-block flex-shrink-0 self-center ml-5">
+            </a>
+
+
+                
+            <!--Menu-->
+            <div class="absolute right-0 mr-5 mt-2 rounded-lg border w-3/5 h-2/5 bg-slate-400
+                        flex flex-col items-center justify-center text-xl gap-y-6 z-10 scale-x-0 
+                        opacity-95" id="menu">
+                <a class="text-white border-b border-gray-200 w-4/5 text-center border-opacity-30">Iniciar Sesión</a>
+                <p class="text-white border-b border-gray-200 w-4/5 text-center border-opacity-30">Ayuda</p>
+                <p class="text-white border-b border-gray-200 w-4/5 text-center border-opacity-30">¿Quienes somos?</p>
+                <p class="text-white border-b border-gray-200 w-4/5 text-center border-opacity-30">Contacto</p>
+            </div> 
+
+            
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'js/navbar.js' %}"></script>   
+    {% endblock content %}
+</body>
+
+</html>
