@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{html,js}'],
+  plugins:[
+    require('tailwindcss-animated'),
+  ],
   theme: {
     colors: {
       'blue': '#1fb6ff',
@@ -18,6 +21,11 @@ module.exports = {
       serif: ['Merriweather', 'serif'],
     },
     extend: {
+      screens: {
+        '3xl': '1920px',
+        '4xl': '2560px',
+        '5xl': '3840px'
+     },
       spacing: {
         '8xl': '96rem',
         '9xl': '128rem',

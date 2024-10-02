@@ -22,14 +22,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-import landing.urls
-import user.urls
+import landing.urls 
+import user.urls #por temas de compatibilidad, es el unico que no lleva alias
+import dashboard.urls 
 
 
 urlpatterns = [
     path('', include(landing.urls)),
-    path('user/', include(user.urls)),
+    path('user/', include(user.urls)), 
     path('user/', include('django.contrib.auth.urls')),
+    path('dashboard/', include(dashboard.urls)),
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
 ]

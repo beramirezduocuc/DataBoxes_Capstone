@@ -1,0 +1,72 @@
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="h-full w-full flex justify-center">
+
+    <div class="flex min-h-[45rem] h-auto w-3/4 border bg-white self-center justify-center flex-col rounded-lg space-y-3 shadow-2xl
+    lg:max-w-[50%]
+    xl:max-w-[35%]
+    pb-12
+    ">
+
+        <div class="w-full h-1/4 flex-col flex mb-16 mt-20 ">
+            <img src="{% static 'img/github_logo.png' %}" alt="" class="h-20 w-20 self-center justify-center my-4">
+            <h1 class="self-center justify-center text-2xl font-bold">Registro</h1>
+        </div>
+
+        <form method="POST" class="flex h-full w-full self-center rounded-lg flex-col">
+    
+            {% csrf_token %}
+                
+            
+            <div class="ml-10 mb-2 font-semibold text-xl xl:ml-[10%]">
+                <span>Correo electrónico</span>
+            </div>
+            {{ form.email }}
+            {% if form.email.errors %}
+            <div class="ml-10 mb-2 text-lg xl:ml-[10%] w-3/4 text-red-500">
+                <p class="text-red-500">{{ form.email.errors }}</p>
+            </div>
+            {% endif %}
+                
+            
+            <div class="ml-10 mb-2 font-semibold text-xl xl:ml-[10%] w-3/4">
+                <span>Contraseña</span>
+            </div>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+            <div class="ml-10 mb-2 text-lg xl:ml-[10%] text-red-500">
+                <p class="text-red-500">{{ form.password1.errors }}</p>
+            </div>
+            {% endif %}
+                
+            
+            <div class="ml-10 mb-2 font-semibold text-xl xl:ml-[10%] ">
+                <span>Confirme su contraseña</span>
+            </div>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+            <div class="ml-10 mb-2 text-lg xl:ml-[10%] w-3/4 text-red-500">
+                <p class="text-red-500">{{ form.password2.errors }}</p>
+            </div>
+            {% endif %}
+            
+            
+            <button type="submit" class="h-16 w-3/6 bg-white self-center mt-7 shadow-lg border border-black rounded-lg xl:text-xl">
+                Registrarse
+            </button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+

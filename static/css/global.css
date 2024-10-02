@@ -1,0 +1,11 @@
+.font-deep-gray-custom{
+    color: #383838;
+}
+
+.font-gray-custom{
+    color: rgb(102, 102, 102);
+}
+
+input[type=text]:focus {
+    border: 3px solid rgb(253 186 116);
+  }

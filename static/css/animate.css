@@ -1,0 +1,11 @@
+/* Asegúrate de que el sidebar esté fuera de la pantalla inicialmente */
+.sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-out; /* Para ocultar el sidebar */
+}
+
+/* Clase activa cuando el sidebar se muestra */
+.sidebar-active {
+    transform: translateX(0);
+    transition: transform 0.3s ease-in; /* Para mostrar el sidebar */
+}

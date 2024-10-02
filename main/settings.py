@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'main',
     'landing',
     'user',
+    'dashboard',
     'tailwind',
     'theme',
     'django_browser_reload',
-
 ]
 
 
@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user.middleware.UserLoginRequiredMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
@@ -114,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
