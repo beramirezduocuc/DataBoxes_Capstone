@@ -6,6 +6,8 @@
 {% tailwind_css %}
 
 <head>
+    <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}
@@ -27,61 +29,53 @@
     sm:px-[5%]
     lg:px-[10%]">
         <div class=" h-16 w-full flex mx-4 border-opacity-50">
-            <a href="{% url 'home' %}" class="h-7 inline-block flex-shrink-0 self-center mr-auto">
-                <span alt="home" class="self-center mr-auto font-serif text-xl font-extrabold">DataBuckets</span>
-            </a>
+
+                <i class="fa-solid fa-bucket self-center justify-center my-4 text-3xl text-orange-500 ml-8"></i>
+
             <div class="h-7 flex-shrink-0 self-center ml-auto">
-                <img src="{% static 'img/user.png' %}" alt="login" class="h-7 inline-block flex-shrink-0 self-center ml-auto md:hidden">
-                <div class="hidden md:inline-block text-black">
-                    {% if request.user.is_authenticated %}
-                    <a href="#">
-                    <h1>Bienvenido, {{ request.user.username }}!</h1>
+                <a href="#" id="menuBtn" class="md:hidden mr-8">
+                    <i class="fa-user fa-solid text-2xl inline-block flex-shrink-0 self-center ml-auto" id="icon"></i>
                 </a>
-                {% else %}
+                <div class="hidden md:inline-block text-black">
+                    
+                
                 <a class="inline-flex mr-4"href="{% url 'login' %}">
                     <h1 class="font-bold">Iniciar sesion</h1>
                 </a>
                 <a class="inline-flex"href="{% url 'user_register' %}">
-                    <h1 class="font-bold">Registrarse</h1>
+                    <h1 class="font-bold ">Registrarse</h1>
                 </a>
-
-                {% endif %}
                 </div>
         </div>
-        {% if request.user.is_authenticated %}
-            <a href="#" class="h-7 inline-block flex-shrink-0 self-center ml-5 z-30" id="menuBtn">
+<!--           <a href="#" class="h-7 inline-block flex-shrink-0 self-center ml-5 z-30" id="menuBtn">
                 <img src="{% static 'img/three_dots.png' %}" alt="options" class="h-7 inline-block flex-shrink-0 self-center ml-5 text-black" id="icon">
             </a>
-           
-            
+            --> 
             <!-- Contenedor para el fondo oscuro -->
             <div id="overlay" class="hidden absolute inset-0 bg-black bg-opacity-50 z-20 w-full h-full"></div>
             
             <!-- Menu -->
-            
-      
-            
 
             <!--Despues de mockups, esto cambia un poco, retocar mas tarde.-->
-            <div id="menu" class="absolute right-3 mt-2 rounded-lg  w-93/5 h-2/6 bg-white bg-opacity-95 flex flex-col items-center justify-center z-20 gap-y-6 scale-x-0 
-                opacity-95 text-black transition-transform duration-3009 origin-right font-bold text-center text-xl flex-grow overflow-auto
-                sm:w-2/5 sm:mr-[5%]
+            <div id="menu" class="absolute right-3 mt-2 rounded-lg  w-52 h-36 bg-white bg-opacity-95 flex flex-col items-center justify-center z-20 gap-y-6 scale-x-0 
+                text-black transition-transform duration-3009 origin-right font-bold text-center text-xl flex-grow overflow-auto
+                sm:w-60 sm:mr-[5%]
                 md:text-2xl
-                lg:w-16 lg:mr-[10%]
-                xl:w-[25%]
-                2xl:w-[15%]">
-                
-                <a>Dashboard</a>
-                <p>Extraer gráficos</p>
-                <p>Información API</p>
-                <a href="{% url 'logout' %}">
-                <p>Cerrar sesión</p>
+                ">
+                <a href="{% url 'login' %}" class="space-x-3 inline-flex">
+                    <i class="fa-user fa-solid text-2x" class="inline-flex"></i>
+                    <p>Iniciar sesión</p>
                 </a>
+                <div class="border border-gray-200 w-4/5"></div>
+                <a href="{% url 'user_register' %}" class="space-x-3 inline-flex">
+                    <i class="fa-key fa-solid text-2x" class="inline-flex"></i>
+                    <p>Registrarse</p>
+                </a>
+
             </div>
-            {% else %}
-            {% endif %}
         </div>
     </div>
+    <script src="{% static 'js/navbar.js' %}"></script>
     {% endblock content %}
 </body>
 

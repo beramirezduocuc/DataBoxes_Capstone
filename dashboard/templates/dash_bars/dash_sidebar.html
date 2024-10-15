@@ -9,11 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
-<body class="flex">
+<body class= "flex bg-gray-200">
+    <div id="overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30"></div>
     {% block content %}
-    <div class="bg-gradient-to-b from-[#37373c] to-[#191919] h-[96%] w-[70%] ml-4 my-4 rounded-xl">
+    <div class="bg-gradient-to-b from-[#37373c] to-[#191919] h-[96%] w-[20rem] ml-4 my-4 rounded-xl 
+    ">
         <div class="w-[90%] h-full flex self-center mx-auto p-3 flex-col text-gray-200">
-
             <div class="flex border-b border-gray-400 h-auto mb-6 text-3xl break-pretty  
                     justify-center items-center">
                 <p class="mt-3 mb-5">{{ username }}</p>
@@ -21,7 +22,7 @@
             
             <!--<h1 class="font-serif text-red-500 text-center">{{ empresa }}</h1>  (??)-->
             
-            <div class="flex flex-col h-full justify-between text-xl">
+            <div class="flex flex-col h-full justify-between text-xl ml-3">
                 <div class="space-y-6">
                     <div class="flex items-center space-x-4">
                         <i class="fa-solid fa-plus"></i>
@@ -39,10 +40,12 @@
                     </div>
                 </div>
             <!-- este queda fuera porque tiene que ir siempre al fondo, dentro del container esto es imposible -->
-                <div class="flex items-center space-x-4 mb-10">
+            <a href="{% url 'logout' %}">    
+            <div class="flex items-center space-x-4 mb-10">
                     <i class="fa-solid fa-power-off"></i>
                     <p>Cerrar Sesión</p>
                 </div>
+            </a>
             </div>
             
         </div>

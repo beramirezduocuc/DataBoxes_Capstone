@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from main.models import ClienteUsuario
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -7,7 +8,7 @@ from django.db.utils import IntegrityError
 from .forms import CreateUserForm, CustomSetPasswordForm
 from django.contrib.auth.forms import SetPasswordForm
 
-#CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD~CRUD
+#CRUD
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -27,14 +28,13 @@ def user_logout(request):
     logout(request)  
     return redirect('home')
 
- 
 def user_register(request):
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            if User.objects.filter(username=email).exists():
+            if ClienteUsuario.objects.filter(email=email).exists():
                 form.add_error('email', 'Este correo electrónico ya está registrado.')
             else:
                 try:

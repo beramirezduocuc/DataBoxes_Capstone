@@ -1,5 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import resolve
+from django.template import TemplateDoesNotExist
+from django.conf import settings
 
 class UserLoginRequiredMiddleware:
 
@@ -18,4 +20,16 @@ class UserLoginRequiredMiddleware:
 
         # Continuar con la solicitud normalmente si está autenticado o la URL está exenta
         response = self.get_response(request)
+        return response
+
+class HandleTemplateDoesNotExistMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        try:
+            response = self.get_response(request)
+        except TemplateDoesNotExist:
+            # Redirigir a la página de inicio si no se encuentra el template
+            return redirect(settings.LANDING_PAGE_URL)  # Usa la URL que corresponda
         return response

@@ -25,6 +25,7 @@ from django.urls import path, include
 import landing.urls 
 import user.urls #por temas de compatibilidad, es el unico que no lleva alias
 import dashboard.urls 
+from django.conf.urls import handler404
 
 
 urlpatterns = [
@@ -35,3 +36,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
+
+handler404 = 'main.views.handle_404'

@@ -1,27 +1,32 @@
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm,SetPasswordForm
+from main.models import ClienteUsuario
+from django import forms
 
 class CreateUserForm(UserCreationForm):
     class Meta:
-        model = User
-        fields = ['email', 'password1', 'password2']
+        model = ClienteUsuario
+        fields = ['nombre','email', 'password1', 'password2']
     
     def __init__(self, *args, **kwargs):
         super(CreateUserForm, self).__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs.update({'class': 'flex h-[20%] w-5/6 self-center rounded-lg xl:text-2xl xl:w-[80%] xl:h-[15%]'})
-        self.fields['password1'].widget.attrs.update({'class': 'flex h-[20%] w-5/6 self-center rounded-lg xl:text-2xl xl:w-[80%] xl:h-[15%]'})
-        self.fields['password2'].widget.attrs.update({'class': 'flex h-[20%] w-5/6 self-center rounded-lg xl:text-2xl xl:w-[80%] xl:h-[15%]'})
+        for field_name in self.fields:
+            self.fields[field_name].widget.attrs.update({
+                'class': 'flex h-[20%] w-5/6 self-center rounded-lg xl:text-2xl xl:w-[80%] xl:h-[15%]'
+            })
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if ClienteUsuario.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este email ya está registrado.")
+        return email
 
-    #Email = Nombre de usuario. esto es para mantener el sistema default de django. NO optimo. Pero sencillo.
-    #Probablemente haya que cambiarlo mas tarde 
     def save(self, commit=True):
         user = super(CreateUserForm, self).save(commit=False)
-        user.username = self.cleaned_data['email']  
+        user.nombre = self.cleaned_data['nombre']
+        user.email = self.cleaned_data['email']  
         if commit:
             user.save()
         return user
-    
-from django.contrib.auth.forms import SetPasswordForm
 
 class CustomSetPasswordForm(SetPasswordForm):
     def __init__(self, *args, **kwargs):

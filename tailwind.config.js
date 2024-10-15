@@ -1,9 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,js}'],
-  plugins:[
-    require('tailwindcss-animated'),
+  content: [
+    './templates/**/*.{html,js}',
+    './static/js/**/*.js',
   ],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('tailwindcss-animated')]
+    ,
   theme: {
     colors: {
       'blue': '#1fb6ff',
@@ -22,6 +26,7 @@ module.exports = {
     },
     extend: {
       screens: {
+        
         '3xl': '1920px',
         '4xl': '2560px',
         '5xl': '3840px'

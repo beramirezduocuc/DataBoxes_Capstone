@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'user.middleware.UserLoginRequiredMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    'user.middleware.HandleTemplateDoesNotExistMiddleware', 
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -79,6 +80,7 @@ TEMPLATES = [
     },
 ]
 
+LANDING_PAGE_URL = '/'
 WSGI_APPLICATION = 'main.wsgi.application'
 
 
@@ -87,14 +89,20 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'databuckets',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': '127.0.0.1',
+        'PORT': '',
     }
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'main.ClienteUsuario'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

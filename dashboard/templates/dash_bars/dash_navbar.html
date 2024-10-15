@@ -2,7 +2,6 @@
 {% load static tailwind_tags %}
 {% tailwind_preload_css %}
 {% tailwind_css %}
-<!DOCTYPE html>
 <html lang="en">
 <head> 
     <meta charset="UTF-8">
@@ -11,23 +10,26 @@
     <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    {% block content %}
-    <div class="bg-gray-200 h-full w-[90%] flex rounded-xl justify-center mx-auto">
-        <div class="inline-flex my-auto text-gray-600 text-opacity-80 space-x-5
+{% block content %}
+<div class="h-28 w-full flex rounded-xl justify-center mx-auto
+    backdrop-blur-md bg-opacity-50 bg-gray-200">
+    <div class="inline-flex my-auto text-gray-600 text-opacity-80 space-x-5
         text-3xl w-full h-auto justify-center items-center">
-            <input type="text" placeholder="Buscar" class="border border-gray-300 w-[60%] h-full
-            rounded-lg bg-gray-200"></input>
-            
-            <i class="fa-solid fa-bell"></i>
-            <a class="z-50" href="#">
-            <i id='sidebarBtn' class="fa-solid fa-bars" onclick="sideShow()"></i>
-
-
-            </a>
-        </div>
+        <input type="text" placeholder="Buscar" class="border border-gray-300 w-[60%] h-full
+        rounded-lg bg-gray-200"></input>
+        
+        <i class="fa-solid fa-bell"></i>
+        <a class="z-50 lg:hidden border" href="#">
+            <i id='sidebarBtn' class="fa-solid fa-bars z-50"></i>
+        </a>
     </div>
-    <script type="text/javascript" src="{% static 'js/sidebar.js' %}"></script>   
-    {% endblock content %}
+</div>
+
+
+<script type="text/javascript" src="{% static 'js/sidebar.js' %}"></script>   
+{% endblock content %}
+
+    
     
 </body>
 </html>
