@@ -1,29 +1,26 @@
-document.querySelectorAll('.loadChart').forEach(button => {
-    button.addEventListener('click', function() {
-        const chartURL = this.getAttribute('data-url');
-        fetch(chartURL)
-        .then(response => response.text())
-        .then(data => {
-            const container = document.getElementById('chartContainer');
-            container.innerHTML += data; 
-        })
-        .catch(error => console.error('Error:', error));
-    });
-});
+window.addEventListener('load', function() {
+    console.log('loaded')
+})
 
 
-const getOptionChart = async() => {
-    try{
-        const response = await fetch("");
-    } catch(ex){
+const getOptionChart = async () => {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/dashboard/get_chart/");
+        return await response.json();
+    } catch (ex) {
         alert(ex);
     }
 };
 
-const initChart = async() => {
+const initChart = async () => {
     const myChart = echarts.init(document.getElementById("chart"));
-}
+    myChart.setOption(await getOptionChart());
+    myChart.resize();
+};
 
-windows.addEventListener("load", async()=>{
+window.addEventListener("load", async () => {
     await initChart();
-})
+    setInterval(async () => {
+        await initChart();
+    }, 5000);
+});

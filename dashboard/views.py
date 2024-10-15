@@ -1,5 +1,6 @@
 from django.shortcuts import render 
 from main.models import ClienteUsuario
+from django.http.response import JsonResponse
 import requests
 from random import randrange
 
@@ -17,32 +18,50 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 
-def get_chart(request):
-    serie ={}
-    counter=0
+def get_chart(_request):
 
-    while(counter<7):
-        serie.append(randrange(100,400))
+    colors = ['blue', 'orange', 'red', 'black', 'yellow', 'green', 'magenta', 'lightblue', 'purple', 'brown']
+    random_color = colors[randrange(0, (len(colors)-1))]
+
+    serie = []
+    counter = 0
+
+    while (counter < 7):
+        serie.append(randrange(100, 400))
+        counter += 1
+
     chart = {
-        'xAxis':[
+        'tooltip': {
+            'show': True,
+            'trigger': "axis",
+            'triggerOn': "mousemove|click"
+        },
+        'xAxis': [
             {
-                'type':"category",
-                'data':["Lun","Mar","Mie","Jue","Vie","Sab","Dom"]
+                'type': "category",
+                'data': ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
             }
         ],
-        'yAxis':[
+        'yAxis': [
             {
-                'type':"value"
+                'type': "value"
             }
         ],
-        'series':[
+        'series': [
             {
-                'data':serie,
-                'type':"line"
+                'data': serie,
+                'type': "line",
+                'itemStyle': {
+                    'color': random_color
+                },
+                'lineStyle': {
+                    'color': random_color
+                }
             }
         ]
     }
-    return render(request, 'dashboard/dashboard.html')
+
+    return JsonResponse(chart)
 
 
 def bar_chart(request):

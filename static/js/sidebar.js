@@ -1,23 +1,16 @@
 const sidebar = document.getElementById("sidebar");
 const sidebarBtn = document.getElementById("sidebarBtn");
-const navbar = document.getElementById("navbar");
-const graphContainer = document.getElementById("graphContainer")
-function sideShow() {
-    if (sidebar) {
-        sidebar.classList.toggle("hidden");
-    }    
-}
-console.log('sidebar cargado');
 
-window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('mt-2');
-    } else {
-        navbar.classList.remove('mt-2');
-    }
+sidebarBtn.addEventListener("click", (event) => {
+    sidebar.classList.toggle("hidden");
+    event.preventDefault();
 });
 
-
-
-
-
+// Detectar clic fuera del sidebar en dispositivos móviles
+document.addEventListener("click", (event) => {
+    const isClickInside = sidebar.contains(event.target) || sidebarBtn.contains(event.target);
+    
+    if (!isClickInside && window.innerWidth < 1024) { 
+        sidebar.classList.add("hidden");
+    }
+});

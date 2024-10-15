@@ -24,21 +24,15 @@
         id="navbar">
             {% include 'dash_bars/dash_navbar.html' %}
         </div>
-        <div class="flex items-center flex-col space-y-7 pt-28" id="graphContainer">
+        <div class="flex items-center flex-col space-y-7 pt-28">
             <div class="flex flex-col w-full h-max items-center space-y-7 mb-9">
-                <button class="loadChart bg-blue-500 text-white px-4 py-2" data-url="{% url 'bar_chart' %}">Gráfico de Barra</button>
-                <button class="loadChart bg-blue-500 text-white px-4 py-2" data-url="{% url 'line_chart' %}">Gráfico de Línea</button>
-            
-                <div id="chartContainer" class="w-[90%] space-y-7 bg-emerald-500"></div>
-            </div>
+            <div id="chart" class="w-full min-h-[500px]"></div>
         </div>
 
-        <div id="main" class="w-32 h-24"></div>
-            <div id="chart"> </div>
-        </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
     <script type="text/javascript" src="{% static 'js/graph_loader.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
+    
     <script type="text/javascript" src="{% static 'js/sidebar.js' %}"></script> 
     {% endblock content %}
 </body>

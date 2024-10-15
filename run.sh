@@ -4,6 +4,8 @@
 #ESTE SCRIPT ES PARA EJECUTAR EL SERVIDOR EN LINUX, SI ESTAS EN WINDOWS, IGNORALO.#
 ###################################################################################
 
+##NO FUNCIONA##
+
 # Función para manejar la salida del script
 cleanup() {
     echo "Cerrando servidores..."
