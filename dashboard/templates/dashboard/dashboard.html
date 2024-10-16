@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
 </head>
 <body class="flex h-screen bg-gray-200 ">
     <div class="fixed top-0 left-0  h-full hidden lg:block z-50" id="sidebar">
@@ -25,12 +24,12 @@
         id="navbar">
             {% include 'dash_bars/dash_navbar.html' %}
         </div>
-        <div class="flex items-center flex-col border mx-4 mt-32 space-y-6 pb-10
-        lg:ml-0
+        <div class="flex items-center flex-col border mx-4 mt-24 space-y-6 pb-10
+        lg:ml-9
         xl:mr-6">
-            {% include 'charts/line_chart.html' %}
+        {% include 'charts/line_chart.html' %}
         </div>
-
+</div>
     {% endblock content %}
 </body>
 </html>

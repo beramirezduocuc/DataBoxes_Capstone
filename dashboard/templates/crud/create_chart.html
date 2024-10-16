@@ -1,0 +1,48 @@
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+
+{% block content %}
+<body class="flex h-screen bg-gray-200 ">
+    <div class="fixed top-0 left-0  h-full hidden lg:block z-50" id="sidebar">
+        {% include 'dash_bars/dash_sidebar.html' %}
+    </div>
+    
+    <!-- nav+dash -->
+    <div class="flex flex-col w-full
+    lg:pl-[20rem]">
+        <div class="min-h-28 fixed top-0 w-full z-30 self-center
+        sm:w-[90%]
+        lg:w-[60%]"
+        id="navbar">
+            {% include 'dash_bars/dash_navbar.html' %}
+        </div>
+
+        <div class="flex items-center flex-col border mx-4 mt-24 space-y-6 pb-10
+        lg:ml-9
+        xl:mr-6">
+        {% include 'charts/line_chart.html' %}
+        </div>
+
+        <div class="flex items-center flex-col border mx-4  space-y-6 pb-10
+        lg:ml-9
+        xl:mr-6">
+        
+        <div class="border border-red-500 w-full h-auto bg-white rounded-lg shadow-md flex-col">
+            <div class="border border-green-500 h-40 w-40">
+            
+            </div>
+        </div>
+        
+        </div>
+    </div>
+    </div>
+
+
+<script type="text/javascript" src="{% static 'js/chart_customizer.js' %}"></script>   
+<script type="text/javascript" src="{% static 'js/graph_loader.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
+<script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
+</body>
+{% endblock content %}

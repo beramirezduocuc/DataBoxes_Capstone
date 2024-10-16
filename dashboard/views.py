@@ -1,5 +1,6 @@
 from django.shortcuts import render 
 from main.models import ClienteUsuario
+from .forms import chartTypeForm
 from django.http.response import JsonResponse
 import requests
 from random import randrange
@@ -75,6 +76,11 @@ def bar_chart(request):
 
 def line_chart(request):
     return render(request, 'charts/line_chart.html')
+
+def create_chart(request):
+    context = {}
+    context['form'] = chartTypeForm()
+    return render(request, 'crud/create_chart.html', context)
 
 
 
