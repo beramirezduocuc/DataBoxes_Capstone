@@ -19,7 +19,6 @@ def dashboard(request):
 
 
 def get_chart(_request):
-
     colors = ['blue', 'orange', 'red', 'black', 'yellow', 'green', 'magenta', 'lightblue', 'purple', 'brown']
     random_color = colors[randrange(0, (len(colors)-1))]
 
@@ -31,6 +30,13 @@ def get_chart(_request):
         counter += 1
 
     chart = {
+        'grid': {
+            'left':'0%',
+            'right':'0%',
+            'top':'5%',
+            'bottom':'0%',
+            'containLabel': 'true'
+        },
         'tooltip': {
             'show': True,
             'trigger': "axis",

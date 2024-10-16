@@ -6,11 +6,12 @@
 <html lang="en">
 <head> 
     <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
 <body class="flex h-screen bg-gray-200 ">
-    <div class="fixed top-0 left-0  h-full hidden lg:block z-40" id="sidebar">
+    <div class="fixed top-0 left-0  h-full hidden lg:block z-50" id="sidebar">
         {% include 'dash_bars/dash_sidebar.html' %}
     </div>
     
@@ -24,16 +25,12 @@
         id="navbar">
             {% include 'dash_bars/dash_navbar.html' %}
         </div>
-        <div class="flex items-center flex-col space-y-7 pt-28">
-            <div class="flex flex-col w-full h-max items-center space-y-7 mb-9">
-            <div id="chart" class="w-full min-h-[500px]"></div>
+        <div class="flex items-center flex-col border mx-4 mt-32 space-y-6 pb-10
+        lg:ml-0
+        xl:mr-6">
+            {% include 'charts/line_chart.html' %}
         </div>
 
-
-    <script type="text/javascript" src="{% static 'js/graph_loader.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
-    
-    <script type="text/javascript" src="{% static 'js/sidebar.js' %}"></script> 
     {% endblock content %}
 </body>
 </html>
