@@ -23,55 +23,80 @@ def dashboard(request):
 
 
 
-def get_chart(request, param1):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        param1 = data.get('param1')
-        print(f'Recibido param1: {param1}') 
-        colors = ['blue', 'orange', 'red', 'black', 'yellow', 'green', 'magenta', 'lightblue', 'purple', 'brown']
-        random_color = colors[randrange(0, (len(colors)-1))]
-        serie = [randrange(100, 400) for _ in range(7)]  # Lista con datos aleatorios
 
-        chart = {
-            'grid': {
-                'left':'0%',
-                'right':'0%',
-                'top':'5%',
-                'bottom':'0%',
-                'containLabel': 'true'
-            },
-            'tooltip': {
-                'show': True,
-                'trigger': "axis",
-                'triggerOn': "mousemove|click"
-            },
-            'xAxis': [
-                {
-                    'type': "category",
-                    'data': ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-                }
-            ],
-            'yAxis': [
-                {
-                    'type': "value"
-                }
-            ],
-            'series': [
-                {
-                    'data': serie,
-                    'type': param1,
-                    'itemStyle': {
-                        'color': random_color
-                    },
-                    'lineStyle': {
-                        'color': random_color
+GRAPH_TYPES = {
+    'bar': {
+        'name': 'Barra',
+        'default_color': 'blue'
+    },
+    'line': {
+        'name': 'Línea',
+        'default_color': 'green'
+    },
+    # Agrega más tipos de gráficos aquí sin cambiar todo el código
+}
+def get_chart(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)  
+            graph_type = data.get('graph_type')
+            graph_color = data.get('graph_color')
+            graph_detail = data.get('graph_detail')  
+
+            serie = [randrange(100, 400) for _ in range(7)]  # Datos aleatorios
+
+            chart = {
+                'grid': {
+                    'left': '0%',
+                    'right': '0%',
+                    'top': '5%',
+                    'bottom': '0%',
+                    'containLabel': 'true'
+                },
+                'tooltip': {
+                    'show': True,
+                    'trigger': "axis",
+                    'triggerOn': "mousemove|click"
+                },
+                'xAxis': [
+                    {
+                        'type': "category",
+                        'data': ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
                     }
-                }
-            ]
-        }
-        return JsonResponse(chart)
+                ],
+                'yAxis': [
+                    {
+                        'type': "value"
+                    }
+                ],
+                'series': [
+                    {
+                        'data': serie,
+                        'type': graph_type,  # Usar el tipo de gráfico enviado
+                        'itemStyle': {
+                            'color': graph_color  # Usar el color enviado
+                        },
+                        'lineStyle': {
+                            'color': graph_detail
+                        }
+                    }
+                ]
+            }
+            return JsonResponse(chart)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Solicitud JSON malformada'}, status=400)
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+def get_chart_types(request):
+    if request.method == 'GET':
+        chart_types = {key: value['name'] for key, value in GRAPH_TYPES.items()}  # Devuelve un diccionario de tipos de gráficos
+        return JsonResponse({'chart_types': chart_types})
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 
 
 def create_chart(request):
