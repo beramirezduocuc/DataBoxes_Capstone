@@ -8,3 +8,6 @@ class chartTypeForm(forms.Form):
             'class': 'flex w-36 mt-1 py-2 px-3 mx-auto sm:text-sm'
         })
     )
+    def clean_Tipo_de_grafico(self):
+        data = self.cleaned_data['Tipo_de_grafico']
+        return data.lower()  # Devuelve el valor en minúsculas

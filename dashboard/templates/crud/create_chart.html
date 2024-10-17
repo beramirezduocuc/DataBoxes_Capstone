@@ -31,7 +31,15 @@
         
         <div class="border border-red-500 w-full h-auto bg-white rounded-lg shadow-md flex-col">
             <div class="border border-green-500 h-40 w-40">
-            
+                <form id="chartForm" method="POST">
+                    {% csrf_token %}
+                    <select name="Tipo_de_grafico" id="Tipo_de_grafico">
+                        <option value="bar">Barra</option>
+                        <option value="line">Línea</option>
+                        <!-- Añade más opciones según los tipos de gráficos que soportes -->
+                    </select>
+                </form>
+                
             </div>
         </div>
         
@@ -41,7 +49,6 @@
 
 
 <script type="text/javascript" src="{% static 'js/chart_customizer.js' %}"></script>   
-<script type="text/javascript" src="{% static 'js/graph_loader.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
 <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
 </body>
