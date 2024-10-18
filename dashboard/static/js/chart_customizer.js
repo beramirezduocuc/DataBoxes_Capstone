@@ -4,72 +4,36 @@ const chartForm = document.getElementById('chartForm');
 const chartTypeSelect = document.getElementById('chartTypeSelect');
 const chartColorSelect = document.getElementById('chartColorSelect');
 const detailColorSelect = document.getElementById('detailColorSelect');
+const labelChoice = document.getElementById('labelSelect')
 
 
+const colors = [
+    { value: '#800020', label: 'Rojo' },
+    { value: '#1D3557', label: 'Azul' },
+    { value: '#2E8B57', label: 'Verde' },
+    { value: '#DAA520', label: 'Dorado' },
+    { value: '#F5F5DC', label: 'Beige' },
+    { value: '#F0F0F0', label: 'Blanco'},
+    { value: '#6D757D', label: 'Gris' },
+    { value: '#333333', label: 'Negro' },
+    { value: 'random', label: 'Aleatorio' },
+];
 
+const labelBool = [
+    { value: 'true', label: 'Si'},
+    { value: 'false', label: 'No'},
+]
 
-async function fetchChartTypes() {
-    try {
-        const response = await fetch(get_chart_types_url, {
-            method: 'GET',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'Content-Type': 'application/json'
-            }
-        });
-        if (!response.ok) throw new Error('Error al obtener los tipos de gráficos');
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-async function populateChartOptions() {
-    // Asumiendo que fetchChartTypes devuelve un objeto con los tipos de gráficos
-    const graphTypes = await fetchChartTypes();
-
-    // Poblamos el selector de tipos de gráficos
-    Object.entries(graphTypes).forEach(([type, name]) => {
-        const option = document.createElement('option'); // Crea una nueva opción <option>
-        option.value = type;  // Asigna el valor de la opción (el tipo de gráfico)
-        option.textContent = name;  // Asigna el texto visible (nombre del gráfico)
-        chartTypeSelect.appendChild(option);  // Añade la opción al <select> de tipos de gráfico
-    });
-
-    // Poblamos el selector de colores
-    const colors = ['red', 'blue', 'green', 'random'];
-    colors.forEach(color => {
-        const option = document.createElement('option'); // Crea una nueva opción <option>
-        option.value = color;  // Asigna el valor de la opción (el color)
-        option.textContent = color === 'random' ? 'Aleatorio' : color.charAt(0).toUpperCase() + color.slice(1); // Texto visible
-        chartColorSelect.appendChild(option);
-        detailColorSelect.append(option);
-    });
-}
-
-
-window.addEventListener('load', populateChartOptions);
-
-const getFormValues = () => {
-    const selectedType = chartTypeSelect.value;  // Asegúrate de que el valor sea correcto
-    const selectedColor = chartColorSelect.value;
-    const selectedDetailColor = detailColorSelect.value;
-    return {
-        selectedType,
-        selectedColor,
-        selectedDetailColor,
-    };
+// Función para obtener un color aleatorio
+const getRandomColor = () => {
+    const filteredColors = colors.filter(color => color.value !== 'random'); // Filtra el color aleatorio
+    const randomColor = filteredColors[Math.floor(Math.random() * filteredColors.length)];
+    return randomColor.value;
 };
 
-
-
-chartForm.addEventListener('change', async function(event) {
-    const formData = getFormValues(); 
-    await initChart(formData);  
-});
-
+// Obtén los tipos de gráficos
 async function fetchChartTypes() {
-    const response = await fetch('/dashboard/get_chart_types/');
+    const response = await fetch(get_chart_types_url);
     
     if (!response.ok) {
         throw new Error('Error en la respuesta del servidor');
@@ -79,8 +43,75 @@ async function fetchChartTypes() {
     return data.chart_types;
 }
 
+// Llena las opciones del formulario con tipos de gráficos y colores
+async function populateChartOptions() {
+    const graphTypes = await fetchChartTypes();
 
+    Object.entries(graphTypes).forEach(([type, name]) => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = name;
+        chartTypeSelect.appendChild(option);
+    });
+        
+    colors.forEach(color => {
+        const option = document.createElement('option');
+        option.value = color.value;
+        option.textContent = color.label;
+        chartColorSelect.append(option);
+        detailColorSelect.append(option.cloneNode(true));  
+    });
 
+    labelBool.forEach(labelChoice => {
+        const option = document.createElement('option');
+        option.value = labelChoice.value;
+        option.textContent = labelChoice.label;
+        labelSelect.append(option);
+    });
+}
+
+window.addEventListener('load', populateChartOptions);
+
+// Función para obtener los valores del formulario
+const getFormValues = () => {
+    const selectedType = chartTypeSelect.value;  
+    let selectedColor = chartColorSelect.value;
+    let selectedDetailColor = detailColorSelect.value;
+    let selectedLabel = labelSelect.value === 'true';
+
+    if (selectedColor === 'random') {
+        selectedColor = getRandomColor(); // Obtener color aleatorio
+    }
+    if (selectedDetailColor === 'random') {
+        selectedDetailColor = getRandomColor(); // Obtener color aleatorio para detalles
+    }
+    
+    return {
+        selectedType,
+        selectedColor,
+        selectedDetailColor,
+        selectedLabel,
+    };
+};
+
+// Evento para actualizar el gráfico cuando se cambie el formulario
+chartForm.addEventListener('change', async function() {
+    const formData = getFormValues();
+    await initChart(formData);  
+});
+
+// Mostrar un gráfico por defecto al cargar la página
+window.addEventListener("load", async () => {
+    const defaultFormData = {
+        selectedType: 'bar',
+        selectedColor: '#800020',
+        selectedDetailColor: '#800020',
+        selectedLabel:true,
+    };
+    await initChart(defaultFormData);  
+});
+
+// Obtener los datos del gráfico desde el servidor
 const getOptionChart = async (formData) => {
     try {
         const response = await fetch(get_chart_url, {
@@ -93,11 +124,11 @@ const getOptionChart = async (formData) => {
                 graph_type: formData.selectedType,  
                 graph_color: formData.selectedColor,
                 graph_detail: formData.selectedDetailColor,
+                graph_label: formData.selectedLabel,
             })
         });
 
         const data = await response.json();
-        console.log('Respuesta del servidor:', data);  // Verificar los datos devueltos por el servidor
 
         if (!response.ok) throw new Error('Error en la respuesta del servidor');
 
@@ -108,30 +139,20 @@ const getOptionChart = async (formData) => {
     }
 };
 
-
-// Inicializar el gráfico
+// Inicializa el gráfico
 const initChart = async (formData) => {
     const myChart = echarts.init(document.getElementById("chart"));
     const option = await getOptionChart(formData);
-
-    console.log(option);  // Para verificar qué opción devuelve el servidor
 
     if (option) {  
         myChart.setOption(option);  
         myChart.resize();  
     } else {
         console.error("La opción del gráfico es inválida");
-        alert('No se pudo cargar el gráfico. Verifique la respuesta del servidor.');
     }
 };
 
-window.addEventListener("load", async () => {
-    const formData = getFormValues();  
-    await initChart(formData);  
-});
-
-
-
+// Función para obtener el CSRF token
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -148,4 +169,3 @@ function getCookie(name) {
 }
 
 const csrftoken = getCookie('csrftoken'); 
-

@@ -27,13 +27,11 @@ def dashboard(request):
 GRAPH_TYPES = {
     'bar': {
         'name': 'Barra',
-        'default_color': 'blue'
     },
     'line': {
         'name': 'Línea',
-        'default_color': 'green'
     },
-    # Agrega más tipos de gráficos aquí sin cambiar todo el código
+
 }
 def get_chart(request):
     if request.method == 'POST':
@@ -42,7 +40,7 @@ def get_chart(request):
             graph_type = data.get('graph_type')
             graph_color = data.get('graph_color')
             graph_detail = data.get('graph_detail')  
-
+            graph_label = data.get('graph_label')
             serie = [randrange(100, 400) for _ in range(7)]  # Datos aleatorios
 
             chart = {
@@ -51,7 +49,13 @@ def get_chart(request):
                     'right': '0%',
                     'top': '5%',
                     'bottom': '0%',
-                    'containLabel': 'true'
+                    'containLabel': graph_label
+                },
+                'legend': {
+                    'show': True,
+                    'type': 'plain',
+                    'top': '10%',  
+                    'left': 'center',  
                 },
                 'tooltip': {
                     'show': True,
@@ -72,9 +76,9 @@ def get_chart(request):
                 'series': [
                     {
                         'data': serie,
-                        'type': graph_type,  # Usar el tipo de gráfico enviado
+                        'type': graph_type,  
                         'itemStyle': {
-                            'color': graph_color  # Usar el color enviado
+                            'color': graph_color  
                         },
                         'lineStyle': {
                             'color': graph_detail
