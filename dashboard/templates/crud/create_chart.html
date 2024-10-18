@@ -32,22 +32,42 @@
             <form id="chartForm" method="POST" class="text-left text-[#344767] font-semibold flex-row 
             w-full grid grid-cols-2 gap-4 px-4 py-4 ">
                 {% csrf_token %}
+
                 <div>
                     <p class="">Tipo de grafico</p>
                     <select id="chartTypeSelect" class="w-full py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
                 </div>
                 <div>
-                    <p>Color de detalles</p>
+                    <p>Color de grafico</p>
                     <select id="chartColorSelect" class="w-full py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
                 </div>
                 <div>
-                    <p>Color de grafico</p>
+                    <p>Color de detalles</p>
                     <select id="detailColorSelect" class="w-full py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
                 </div>
+                <div id="dynamicColorSelectors"></div>
                 <div>
                     <p>Mostrar etiquetas</p>
                     <select id="labelSelect" class="w-full py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
                 </div>
+
+
+                
+                <div>
+                <div class="flex flex-col space-y-3">
+                    <div class="flex flex-col w-[19.3rem] border border-gray-500 py-3 pl-2 shadow-md rounded-lg">
+                        <p id="widthValueDisplay"></p>
+                        <input id="widthSelect"  type="range" min="1" max="100" value="15" class="w-72" >
+                    </div>
+                
+                    <div class="flex flex-col w-[19.3rem] border border-gray-500 py-3 pl-2 shadow-md rounded-lg">
+                        <p id="detailWidthDisplay"></p>
+                        <input id="detailWidthSelect" type="range" min="1" max="40" value="10" class="w-72" >
+                    </div>
+                    
+
+                </div>
+            </div>
             </form>
             
         </div>
