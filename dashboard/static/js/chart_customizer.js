@@ -9,12 +9,7 @@ const detailColorSelect = document.getElementById('detailColorSelect');
 const labelChoice = document.getElementById('labelSelect');
 const widthChoice = document.getElementById('widthSelect');
 const detailWidthChoice = document.getElementById('detailWidthSelect');
-
-const displayWidth = document.getElementById('displayWidthSelect');
-const displayDetailWidthChoice = document.getElementById('displayDetailWidthChoice');
-
-
-
+const legendChoice = document.getElementById('legendSelect')
 
 const colors = [
     { value: '#800020', label: 'Rojo' },
@@ -51,18 +46,22 @@ const fieldMappings = {
         detailWidth: false,
         detailColor: false,
         label: true,
+        legend:true,
+    
     },
     line: {
         width: true,
         detailWidth: true,
         detailColor: true,
         label: true,
+        legend:true,
     },
     pie: {
         width: false,
         detailWidth: false,
         detailColor: false,
         label: false,
+        legend:true,
     },
 };
 
@@ -77,6 +76,7 @@ const updateFormFields = () => {
     detailWidthSelect.parentElement.style.display = fields.detailWidth ? 'block' : 'none';
     detailColorSelect.parentElement.style.display = fields.detailColor ? 'block' : 'none';
     labelChoice.parentElement.style.display = fields.label ? 'block' : 'none';
+    legendChoice.parentElement.style.display = fields.label ? 'block' : 'none';
 };
 
 chartTypeSelect.addEventListener('change', updateFormFields);
@@ -103,10 +103,10 @@ async function populateChartOptions() {
         option.value = labelChoice.value;
         option.textContent = labelChoice.label;
         labelSelect.append(option);
+        legendChoice.append(option.cloneNode(true));
     });
 }
 
-window.addEventListener('load', populateChartOptions);
 
 // Función para obtener los valores del formulario
 const getFormValues = () => {
@@ -116,6 +116,7 @@ const getFormValues = () => {
     let selectedLabel = labelSelect.value === 'true';
     let selectedWidth = widthChoice.value;
     let selectedDetailWidth = detailWidthChoice.value;
+    let selectedLegend = legendChoice.value === 'true';
 
     if (selectedColor === 'random') {
         selectedColor = getRandomColor(); 
@@ -127,6 +128,7 @@ const getFormValues = () => {
         selectedWidth = selectedWidth/10
     }  
     
+    
     return {
         selectedType,
         selectedColor,
@@ -134,6 +136,8 @@ const getFormValues = () => {
         selectedLabel,
         selectedWidth,
         selectedDetailWidth,
+        selectedLegend,
+
     };
 };
 
@@ -144,6 +148,7 @@ chartForm.addEventListener('change', async function() {
 });
 
 const updateWidthValue = () => {
+    //TEXTO DENTRO DEL HTML
     widthValueDisplay.textContent = `Ancho de línea: ${widthChoice.value}`;
     detailWidthDisplay.textContent = `Ancho de detalles: ${detailWidthChoice.value}`;
 };
@@ -157,12 +162,13 @@ window.addEventListener("load", async () => {
         selectedLabel:true,
         selectedWidth:15/10,
         selectedDetailWidth:10,
+        selectedLegend:true,
     };
     updateWidthValue();
+    populateChartOptions();
     await initChart(defaultFormData);  
 });
 
-// Obtener los datos del gráfico desde el servidor
 const getOptionChart = async (formData) => {
     try {
         const response = await fetch(get_chart_url, {
@@ -178,6 +184,7 @@ const getOptionChart = async (formData) => {
                 graph_label: formData.selectedLabel,
                 graph_line_width: formData.selectedWidth,
                 graph_detail_width: formData.selectedDetailWidth,
+                graph_legend_show : formData.selectedLegend,
             })
         });
 

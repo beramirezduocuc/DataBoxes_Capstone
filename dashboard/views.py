@@ -35,11 +35,10 @@ def get_chart(request):
                     'containLabel': params['graph_label'],
                 },
                 'legend': {
-                    'show': True,
-                    'type': 'plain',
-                    'top': '10%',  # Ajusta la posición del legend
-                    'orient': 'vert',  # Puedes ajustar esto según la necesidad
-                    'orient': 'horizontal',  # O 'vertical' si deseas que sea vertical
+                    'show': params['graph_legend_show'],
+                    'type': 'scroll',
+                     
+                    'orient': 'horizontal',  
                 },
                 'tooltip': {
                     'show': True,
@@ -73,8 +72,8 @@ def get_chart(request):
                         'barWidth':params['graph_line_width'] if params['graph_type'] == 'bar' else None
                     },
                     {
-                        'name': 'Variable 2',  # Nombre para la segunda serie
-                        'data': serie_2,  # Segundo conjunto de datos
+                        'name': 'Variable 2',  
+                        'data': serie_2, 
                         'type': params['graph_type'],
                         'itemStyle': {
                             'color': params['graph_detail'] if params['graph_type'] == 'line' else params['graph_color']

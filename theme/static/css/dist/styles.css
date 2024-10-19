@@ -1238,6 +1238,18 @@ select {
   width: 19..3rem;
 }
 
+.w-\[50\%\] {
+  width: 50%;
+}
+
+.w-32 {
+  width: 8rem;
+}
+
+.w-\[9rem\] {
+  width: 9rem;
+}
+
 .max-w-full {
   max-width: 100%;
 }
@@ -1277,6 +1289,10 @@ select {
 
 .flex-col {
   flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .flex-nowrap {
