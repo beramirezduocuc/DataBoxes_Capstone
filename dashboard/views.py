@@ -24,8 +24,16 @@ def get_chart(request):
         try:
             data = json.loads(request.body)  
             params = {**data}
+
+            # Series de ejemplo
             serie_1 = [randrange(100, 400) for _ in range(7)]  
-            serie_2 = [randrange(100, 400) for _ in range(7)] 
+            serie_2 = [randrange(100, 400) for _ in range(7)]
+            
+            series_data = [
+                {'name': 'Variable 1', 'data': serie_1},
+                {'name': 'Variable 2', 'data': serie_2},
+            ]
+
             chart = {
                 'grid': {
                     'left': '0%',
@@ -37,7 +45,6 @@ def get_chart(request):
                 'legend': {
                     'show': params['graph_legend_show'],
                     'type': 'scroll',
-                     
                     'orient': 'horizontal',  
                 },
                 'tooltip': {
@@ -56,49 +63,44 @@ def get_chart(request):
                         'type': "value"
                     }
                 ],
-                'series': [
-                    {
-                        'name': 'Varaiable 1',
-                        'data': serie_1,
-                        'type': params['graph_type'],  
-                        'itemStyle': {
-                            'color': params['graph_detail'] if params['graph_type'] == 'line' else params['graph_color']
-                        },
-                        'lineStyle': {
-                            'width': params['graph_line_width'], 
-                            'color': params['graph_color']
-                        },
-                        'symbolSize': params['graph_detail_width'],
-                        'barWidth':params['graph_line_width'] if params['graph_type'] == 'bar' else None
-                    },
-                    {
-                        'name': 'Variable 2',  
-                        'data': serie_2, 
-                        'type': params['graph_type'],
-                        'itemStyle': {
-                            'color': params['graph_detail'] if params['graph_type'] == 'line' else params['graph_color']
-                        },
-                        'lineStyle': {
-                            'width': params['graph_line_width'],
-                            'color': params['graph_color']
-                        },
-                        'symbolSize': params['graph_detail_width'] if params['graph_type'] == 'line' else 0,
-                        'barWidth': params['graph_line_width'] if params['graph_type'] == 'bar' else None
-                    }
-                ]
+                'series': []
             }
+
+            for i, serie in enumerate(series_data):
+                chart['series'].append({
+                    'name': serie['name'],
+                    'data': serie['data'],
+                    'type': params.get('graph_type'),  
+                    'itemStyle': {
+                        'color': params.get('graph_detail') if params['graph_type'] == 'line' else params['graph_color'][i]  # Color dinámico por índice
+                    },
+                    'lineStyle': {
+                        'width': params.get('graph_line_width'),
+                        'color': params['graph_color'][i] 
+                    },
+                    'symbolSize': params.get('graph_detail_width', 4),
+                    'barWidth': params.get('graph_line_width', 10) if params['graph_type'] == 'bar' else None
+                })
+            print(chart)
             return JsonResponse(chart)
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Solicitud JSON malformada'}, status=400)
+        except Exception as e:
+            print("Error:", e)  
+            return JsonResponse({'error': 'Ocurrió un error al procesar la solicitud.'}, status=500)
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 
 
-
 def create_chart(request):
-        return render(request, 'crud/create_chart.html')
+        chartNumbers = 2
+        chartValues = range(chartNumbers)
+        context = {
+            'chartValues':chartValues
+        }
+        return render(request, 'crud/create_chart.html', context)
 
 
 def line_chart(request):
