@@ -72,7 +72,7 @@ def get_chart(request):
                     'data': serie['data'],
                     'type': params.get('graph_type'),  
                     'itemStyle': {
-                        'color': params.get('graph_detail') if params['graph_type'] == 'line' else params['graph_color'][i]  # Color dinámico por índice
+                        'color': params.get('graph_detail')[i] if params['graph_type'] == 'line' else params['graph_color'][i]  # Color dinámico por índice
                     },
                     'lineStyle': {
                         'width': params.get('graph_line_width'),

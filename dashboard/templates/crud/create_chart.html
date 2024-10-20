@@ -40,15 +40,16 @@
         </div>
         {% for i in chartValues %}
         <div>
-            <p>Color de gráfico</p>
+            <p>Color de variable {{ forloop.counter }}</p>
             <select id="chartColorSelect{{ i }}" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
         </div>
         {% endfor %}
+        {% for i in chartValues %}
         <div>
-            <p>Color de detalles</p>
-            <select id="detailColorSelect" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
+            <p>Color de detalles {{ forloop.counter }}</p>
+            <select id="detailColorSelect{{ i }}" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
         </div>
-        
+        {% endfor %}
         <div id="dynamicColorSelectors" style="display: none;"></div> <!-- Este div debe estar inicialmente oculto -->
         
         <div>

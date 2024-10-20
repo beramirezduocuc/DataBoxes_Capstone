@@ -1,19 +1,13 @@
-
 const get_chart_url = "http://127.0.0.1:8000/dashboard/get_chart/";
 const get_chart_types_url = "http://127.0.0.1:8000/dashboard/get_chart_types/";
 
 const chartForm = document.getElementById('chartForm');
+const detailColorSelect = document.getElementById('detailColorSelect');
 const labelChoice = document.getElementById('labelSelect');
 const widthChoice = document.getElementById('widthSelect');
 const detailWidthChoice = document.getElementById('detailWidthSelect');
 const legendChoice = document.getElementById('legendSelect');
 const chartTypeSelect = document.getElementById('chartTypeSelect'); 
-
-const chartNumbers = 2;  
-const selectedColor = [];  
-const selectedDetailColor = [];
-const chartColorSelectors = [];
-const detailColorSelectors = [];
 
 const colors = [
     { value: '#800020', label: 'Rojo' },
@@ -48,13 +42,12 @@ const fieldMappings = {
     bar: {
         width: true,
         detailWidth: false,
-        graphColor: true,
+        detailColor: false,
         label: true,
         legend: true,   
     },
     line: {
         width: true,
-        graphColor: true,
         detailWidth: true,
         detailColor: true,
         label: true,
@@ -62,7 +55,6 @@ const fieldMappings = {
     },
     pie: {
         width: false,
-        graphColor: true,
         detailWidth: false,
         detailColor: false,
         label: false,
@@ -71,10 +63,12 @@ const fieldMappings = {
 };
 
 window.addEventListener("load", async () => {
-
+    var chartNumbers = 2;  
+    var selectedColor = [];  
+    var chartColorSelectors = [];
     for (let i = 0; i < chartNumbers; i++) {
         const chartColorSelect = document.getElementById(`chartColorSelect${i}`);
-        const detailColorSelect = document.getElementById(`detailColorSelect${i}`);
+        console.log(chartColorSelect); 
 
         if (chartColorSelect) {
             colors.forEach(color => {
@@ -82,48 +76,37 @@ window.addEventListener("load", async () => {
                 option.value = color.value;
                 option.textContent = color.label;
                 chartColorSelect.append(option);
-            })
+            });
             chartColorSelectors.push(chartColorSelect.id);
             selectedColor.push(chartColorSelect.value);
-        };
-            
-        if (detailColorSelect) {
-            colors.forEach(color => {
-                const option = document.createElement('option');
-                option.value = color.value;
-                option.textContent = color.label;
-                detailColorSelect.append(option);
-            });
-            detailColorSelectors.push(detailColorSelect.id);
-            selectedDetailColor.push(detailColorSelect.value);
-        };
-    };
-
-    return selectedColor, selectedDetailColor;
+        } else {
+            console.error(`Error con chartColorSelect${i}`);
+        }
+    }
+    return selectedColor;
+    
 });
-
 
 const updateFormFields = () => {
     const selectedType = chartTypeSelect.value;
     const fields = fieldMappings[selectedType];
-
-
+    var chartNumbers = 2;
+    var chartColorSelectors = [];
+    for (let i = 0; i < chartNumbers; i++) {
+        const chartColorSelect = document.getElementById(`chartColorSelect${i}`);
+        console.log(chartColorSelect); 
+        chartColorSelectors.push(chartColorSelect.id);
+    }
     chartColorSelectors.forEach(chartColorSelectors => {
         const colorSelectElement = document.getElementById(chartColorSelectors);
         if (colorSelectElement) {
-            colorSelectElement.parentElement.style.display = fields.graphColor ? 'block' : 'none';
+            console.log(`Mostrando/ocultando: ${colorSelectElement.id}, Mostrar: ${fields.detailColor}`);
+            colorSelectElement.parentElement.style.display = fields.detailColor ? 'block' : 'none';
         }
     });
-
-    detailColorSelectors.forEach(detailColorSelectors => {
-        const detailSelectElement = document.getElementById(detailColorSelectors);
-        if(detailSelectElement){
-            detailSelectElement.parentElement.style.display = fields.detailColor ? 'block' : 'none';
-        }
-    });
-
     widthSelect.parentElement.style.display = fields.width ? 'block' : 'none';
     detailWidthSelect.parentElement.style.display = fields.detailWidth ? 'block' : 'none';
+    detailColorSelect.parentElement.style.display = fields.detailColor ? 'block' : 'none';
     labelChoice.parentElement.style.display = fields.label ? 'block' : 'none';
     legendChoice.parentElement.style.display = fields.legend ? 'block' : 'none';
 };
@@ -139,6 +122,13 @@ async function populateChartOptions() {
         chartTypeSelect.appendChild(option);
     });
 
+    colors.forEach(color => {
+        const option = document.createElement('option');
+        option.value = color.value;
+        option.textContent = color.label;
+        detailColorSelect.append(option);  
+    });
+
     labelBool.forEach(labelChoice => {
         const option = document.createElement('option');
         option.value = labelChoice.value;
@@ -150,34 +140,27 @@ async function populateChartOptions() {
 
 
 const getFormValues = () => {
-    let selectedColor = [];
-    let selectedDetail = [];
-
+    let selectedColors = [];
+    let chartNumbers = 2;
     for (let i = 0; i < chartNumbers; i++) {
         const chartColorSelect = document.getElementById(`chartColorSelect${i}`);
-        const detailColorSelect = document.getElementById(`detailColorSelect${i}`)
         if (chartColorSelect) {
-            selectedColor.push(chartColorSelect.value);
+            selectedColors.push(chartColorSelect.value);
         }
-        if (detailColorSelect) {
-            selectedDetail.push(detailColorSelect.value);
-        }
-    };
-    //esta es la unica parte en la que es necesario reutilizar el for
-    //porque primero es onload, y despues se tiene que rellamar en 
-    //caso de cambios, probablemente hay mejor manera.
+    }
 
     let selectedType = chartTypeSelect.value;  
+    let selectedDetailColor = detailColorSelect.value;
     let selectedLabel = labelSelect.value === 'true';
     let selectedWidth = widthChoice.value;
     let selectedDetailWidth = detailWidthChoice.value;
     let selectedLegend = legendChoice.value === 'true';
-    
-    if (selectedColor === 'random') {
-        selectedColor = getRandomColor(); 
+
+    if (selectedColors === 'random') {
+        selectedColors = getRandomColor(); 
     }
-    if (selectedDetail === 'random') {
-        selectedDetail = getRandomColor(); 
+    if (selectedDetailColor === 'random') {
+        selectedDetailColor = getRandomColor(); 
     }
     if (selectedType === 'line'){
         selectedWidth = selectedWidth/10
@@ -186,8 +169,8 @@ const getFormValues = () => {
     
     return {
         selectedType,
-        selectedColor,
-        selectedDetail,
+        selectedColors,
+        selectedDetailColor,
         selectedLabel,
         selectedWidth,
         selectedDetailWidth,
@@ -198,7 +181,7 @@ const getFormValues = () => {
 
 chartForm.addEventListener('change', async function () {
     const formData = getFormValues();
-    console.log("Colores seleccionados:", formData.selectedColor); 
+    console.log("Colores seleccionados:", formData.selectedColors); 
 
     console.log(formData);
     updateWidthValue();
@@ -215,8 +198,8 @@ window.addEventListener("load", async () => {
 
     const defaultFormData = {
         selectedType: 'line',
-        selectedColor: '#800020',
-        selectedDetail: '#800020',
+        selectedColors: '#800020',
+        selectedDetailColor: '#800020',
         selectedLabel: true,
         selectedWidth: 15 / 10,
         selectedDetailWidth: 10,
@@ -239,8 +222,8 @@ const getOptionChart = async (formData) => {
             },
             body: JSON.stringify({
                 graph_type: formData.selectedType,
-                graph_color: formData.selectedColor,
-                graph_detail: formData.selectedDetail,
+                graph_color: formData.selectedColors,
+                graph_detail: formData.selectedDetailColor,
                 graph_label: formData.selectedLabel,
                 graph_line_width: formData.selectedWidth,
                 graph_detail_width: formData.selectedDetailWidth,
