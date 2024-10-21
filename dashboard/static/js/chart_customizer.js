@@ -1,6 +1,5 @@
 const get_chart_url = "http://127.0.0.1:8000/dashboard/get_chart/";
-const get_chart_types_url = "http://127.0.0.1:8000/dashboard/get_chart_types/";
-
+const create_chart_url = "http://127.0.0.1:8000/dashboard/create_chart/"
 const chartForm = document.getElementById('chartForm');
 const labelChoice = document.getElementById('labelSelect');
 const widthChoice = document.getElementById('widthSelect');
@@ -9,11 +8,6 @@ const legendChoice = document.getElementById('legendSelect');
 const chartTypeSelect = document.getElementById('chartTypeSelect'); 
 const stackChoice = document.getElementById('stackSelect');
 let chartNumbers;
-
-
-
-
-
 const selectedColor = [];  
 const selectedDetailColor = [];
 const chartColorSelectors = [];
@@ -47,6 +41,8 @@ const getRandomColor = () => {
     return randomColor.value;
 };
 
+
+
 const fieldMappings = {
     bar: {
         width: true,
@@ -64,15 +60,6 @@ const fieldMappings = {
         legend: true,
     },
 };
-
-//document.getElementById('chartNumbers').addEventListener('change', async function() {
-//    const formElement = document.getElementById('chartForm');
-//    if (formElement && formElement.tagName === 'FORM') {
-//        formElement.submit(); 
-//    } else {
-//        console.error("chartForm no es un formulario o no existe.");
-//    }
-//});
 
 
 const fillAdditionalFields = () => {
@@ -235,7 +222,6 @@ window.addEventListener("load", async () => {
         selectedStack: false,
     };
     
-
     await initChart(defaultFormData);
     fillAdditionalFields();
     updateWidthValue();
@@ -265,8 +251,6 @@ const getOptionChart = async (formData) => {
         })
 
         const data = await response.json();
-        console.log(data);
-
         if (!response.ok) throw new Error('Error en la respuesta del servidor');
         const chart = data.chart;
         const chartNumbersRecieved = data.chartNumbers;

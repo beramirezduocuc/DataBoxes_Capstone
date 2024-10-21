@@ -26,7 +26,7 @@ def get_chart(request):
             params = {**data}
 
             series = [
-                [randrange(100, 400) for _ in range(7)] for _ in range(3)
+                [randrange(100, 400) for _ in range(7)] for _ in range(7)
             ]
 
             series_data = [
@@ -93,10 +93,16 @@ def get_chart(request):
                     'barWidth': params.get('graph_line_width', 10) if params['graph_type'] == 'bar' else None
                 })
             
+
+            
             response_data = {
                 'chart':chart,
-                'chartNumbers':len(series_data)
+                'chartNumbers':len(series_data),
+                
             }
+            
+            request.session['storedNumber'] = len(series_data)
+
             return JsonResponse(response_data)
 
         except json.JSONDecodeError:
@@ -109,16 +115,16 @@ def get_chart(request):
 
 
 def create_chart(request):
-    if request.method == 'POST':
-        chartNumbers = int(request.POST.get('chartNumbers')) 
-    else: 
-        chartNumbers = 3
-    chartValues = range(chartNumbers)
+
+    storedNumber = request.session.get('storedNumber')
+    chartValues = range(storedNumber)
     context = {
         'chartValues': chartValues,
-        'chartNumbers': chartNumbers  
     }
+
     return render(request, 'crud/create_chart.html', context)
+
+
 
 
 def line_chart(request):
