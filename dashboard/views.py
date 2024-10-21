@@ -1,9 +1,11 @@
-from django.shortcuts import render 
-from main.models import ClienteUsuario
+from django.shortcuts import render
 from django.http.response import JsonResponse
+import json
 import requests
 from random import randrange
 
+
+from django.http import JsonResponse
 def dashboard(request):
     username = request.user.nombre
     cloud_ping_url = 'https://southamerica-west1-databuckets-437414.cloudfunctions.net/saludar'
@@ -17,31 +19,12 @@ def dashboard(request):
                 'ola' : saludo}
     return render(request, 'dashboard/dashboard.html', context)
 
+def get_chart(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)  
+            params = {**data}
 
-<<<<<<< Updated upstream
-def get_chart(_request):
-
-    colors = ['blue', 'orange', 'red', 'black', 'yellow', 'green', 'magenta', 'lightblue', 'purple', 'brown']
-    random_color = colors[randrange(0, (len(colors)-1))]
-
-    serie = []
-    counter = 0
-
-    while (counter < 7):
-        serie.append(randrange(100, 400))
-        counter += 1
-
-    chart = {
-        'tooltip': {
-            'show': True,
-            'trigger': "axis",
-            'triggerOn': "mousemove|click"
-        },
-        'xAxis': [
-            {
-                'type': "category",
-                'data': ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-=======
             series = [
                 [randrange(100, 400) for _ in range(7)] for _ in range(2)
             ]
@@ -82,35 +65,8 @@ def get_chart(_request):
                     }
                 ],
                 'series': []
->>>>>>> Stashed changes
             }
-        ],
-        'yAxis': [
-            {
-                'type': "value"
-            }
-        ],
-        'series': [
-            {
-                'data': serie,
-                'type': "line",
-                'itemStyle': {
-                    'color': random_color
-                },
-                'lineStyle': {
-                    'color': random_color
-                }
-            }
-        ]
-    }
 
-<<<<<<< Updated upstream
-    return JsonResponse(chart)
-
-
-def bar_chart(request):
-    return render(request, 'charts/bar_chart.html')
-=======
             for i, serie in enumerate(series_data):
                 chart['series'].append({
                     'name': serie['name'],
@@ -164,7 +120,6 @@ def create_chart(request):
     }
     return render(request, 'crud/create_chart.html', context)
 
->>>>>>> Stashed changes
 
 def line_chart(request):
     return render(request, 'charts/line_chart.html')

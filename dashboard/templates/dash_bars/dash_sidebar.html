@@ -7,7 +7,7 @@
 <head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
 </head>
 <body class= "flex bg-gray-200">
     <div id="overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30"></div>
@@ -23,24 +23,31 @@
             <!--<h1 class="font-serif text-red-500 text-center">{{ empresa }}</h1>  (??)-->
             
             <div class="flex flex-col h-full justify-between text-xl ml-3">
-                <div class="space-y-6">
-                    <div class="flex items-center space-x-4">
-                        <i class="fa-solid fa-plus"></i>
-                        <p>Nuevo gráfico</p>
-                    </div>
-            
-                    <div class="flex items-center space-x-4">
-                        <i class="fa-solid fa-chart-simple"></i>
-                        <p>Gráficos</p>
-                    </div>
-            
+                <div class="space-y-2">
+                    <a href="{% url 'create_chart' %}" 
+                    class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115">  
+                        <div class="flex items-center space-x-4">
+                            <i class="fa-solid fa-plus"></i>
+                            <p>Nuevo gráfico</p>
+                        </div>
+                    </a>
+                    
+                    <a href="{% url 'dashboard' %}" class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115">
+                        <div class="flex items-center space-x-4">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            <p>Gráficos</p>
+                        </div>
+                    </a>
+                    <a href="#" class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115">
                     <div class="flex items-center space-x-4">
                         <i class="fa-solid fa-gear"></i>
                         <p>Configuración</p>
                     </div>
+                </a>
                 </div>
             <!-- este queda fuera porque tiene que ir siempre al fondo, dentro del container esto es imposible -->
-            <a href="{% url 'logout' %}">    
+            <a href="{% url 'logout' %}"
+            class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115"> 
             <div class="flex items-center space-x-4 mb-10">
                     <i class="fa-solid fa-power-off"></i>
                     <p>Cerrar Sesión</p>
