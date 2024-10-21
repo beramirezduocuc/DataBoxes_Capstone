@@ -8,8 +8,11 @@ const detailWidthChoice = document.getElementById('detailWidthSelect');
 const legendChoice = document.getElementById('legendSelect');
 const chartTypeSelect = document.getElementById('chartTypeSelect'); 
 const stackChoice = document.getElementById('stackSelect');
+let chartNumbers;
 
-const chartNumbers = document.getElementById('chartNumbers').value;
+
+
+
 
 const selectedColor = [];  
 const selectedDetailColor = [];
@@ -232,6 +235,7 @@ window.addEventListener("load", async () => {
         selectedStack: false,
     };
     
+
     await initChart(defaultFormData);
     fillAdditionalFields();
     updateWidthValue();
@@ -279,8 +283,10 @@ const getOptionChart = async (formData) => {
 const initChart = async (formData) => {
     const myChart = echarts.init(document.getElementById("chart"));
     const option = await getOptionChart(formData);
+    
 
     if (option) {
+        chartNumbers = option.chartNumbersRecieved
         myChart.setOption(option.chart);
         myChart.resize();
     } else {

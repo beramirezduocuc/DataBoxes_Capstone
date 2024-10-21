@@ -26,7 +26,7 @@ def get_chart(request):
             params = {**data}
 
             series = [
-                [randrange(100, 400) for _ in range(7)] for _ in range(2)
+                [randrange(100, 400) for _ in range(7)] for _ in range(3)
             ]
 
             series_data = [
@@ -112,7 +112,7 @@ def create_chart(request):
     if request.method == 'POST':
         chartNumbers = int(request.POST.get('chartNumbers')) 
     else: 
-        chartNumbers = 5
+        chartNumbers = 3
     chartValues = range(chartNumbers)
     context = {
         'chartValues': chartValues,
