@@ -9,6 +9,11 @@ from .forms import CreateUserForm, CustomSetPasswordForm
 from django.contrib.auth.forms import SetPasswordForm
 
 #CRUD
+
+
+def carrito(request):
+    return render(request, 'dashboard/dashboard.html')
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']

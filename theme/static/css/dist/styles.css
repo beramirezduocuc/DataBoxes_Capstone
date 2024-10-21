@@ -939,10 +939,6 @@ select {
   margin-top: 2rem;
 }
 
-.mb-9 {
-  margin-bottom: 2.25rem;
-}
-
 .block {
   display: block;
 }
@@ -1038,10 +1034,6 @@ select {
 
 .min-h-\[45rem\] {
   min-height: 45rem;
-}
-
-.min-h-\[500px\] {
-  min-height: 500px;
 }
 
 .w-14 {
@@ -1225,12 +1217,6 @@ select {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
-}
-
-.space-y-7 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
 }
 
 .self-center {
@@ -1457,10 +1443,6 @@ select {
 
 .pt-3 {
   padding-top: 0.75rem;
-}
-
-.pt-28 {
-  padding-top: 7rem;
 }
 
 .text-left {
