@@ -6,18 +6,33 @@ from random import randrange
 from django.utils import timezone
 
 from django.http import JsonResponse
+import requests
+
 def dashboard(request):
     username = request.user.nombre
     cloud_ping_url = 'https://southamerica-west1-databuckets-437414.cloudfunctions.net/saludar'
     try:
         response = requests.get(cloud_ping_url)
-        saludo = response.text 
-    except requests.RequestException as e:
-        saludo = 'error de conexion con cloud'
         
-    context = {'username' : username,
-                'ola' : saludo}
+        if response.status_code == 200:
+        
+            data = response.json()
+            column1 = data.get('column1')
+            column2 = data.get('column2')
+            column3 = data.get('column3')
+        else:
+            column1, column2, column3 = 'Error', 'Error', 'Error'
+    except requests.RequestException as e:
+        column1, column2, column3 = 'error de conexion con cloud', '', ''
+        
+    context = {
+        'username': username,
+        'column1': column1,
+        'column2': column2,
+        'column3': column3
+    }
     return render(request, 'dashboard/dashboard.html', context)
+
 
 def get_chart(request):
     if request.method == 'POST':
@@ -30,8 +45,8 @@ def get_chart(request):
             params = {**data}
 
             series = [
-                coindata_json['coin_prices']
-            #    [randrange(100, 400) for _ in range(7)] for _ in range(3)
+            #   coindata_json['coin_prices']
+                [randrange(100, 400) for _ in range(7)] for _ in range(2)
             ]
             if not isinstance(series[0], list):
                 series = [series] 
@@ -71,7 +86,7 @@ def get_chart(request):
                 'xAxis': [
                     {
                         'type': "category",
-                        'data': coindata_json['coin_timestamps']
+                        'data': ['Lun','Mar','Mie','Jue','Vie','Sab','Dom']
                     }
                 ],
                 'yAxis': [
