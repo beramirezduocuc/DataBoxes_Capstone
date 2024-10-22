@@ -3,7 +3,7 @@ from django.http.response import JsonResponse
 import json
 import requests
 from random import randrange
-
+from django.utils import timezone
 
 from django.http import JsonResponse
 def dashboard(request):
@@ -26,7 +26,7 @@ def get_chart(request):
             params = {**data}
 
             series = [
-                [randrange(100, 400) for _ in range(7)] for _ in range(7)
+                [randrange(100, 400) for _ in range(7)] for _ in range(3)
             ]
 
             series_data = [
@@ -73,8 +73,8 @@ def get_chart(request):
                     'data': serie['data'],
 
 
-                    'stack': 'Total' if params.get('graph_stack', True) else None,  # Condición para gráfico apilado
-                    'areaStyle': {} if params.get('graph_stack', True) else None,   # Solo aplica si es apilado
+                    'stack': 'Total' if params.get('graph_stack', True) else None,  
+                    'areaStyle': {} if params.get('graph_stack', True) else None,   
                     
                     'emphasis': {
                         'focus': 'series'
@@ -114,14 +114,22 @@ def get_chart(request):
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 
+
+#el timestamp es para forzar al navegador a NO usar cache, 
+#si llega a usar cache, la pagina no se actualiza correctamente
+#en cuanto a la cantidad de variables/opciones
+#por lo que pueden haber 5 variables y las opciones disponibles
+#van a ser las anteriores a la sesion
+
 def create_chart(request):
 
     storedNumber = request.session.get('storedNumber')
     chartValues = range(storedNumber)
+    
     context = {
         'chartValues': chartValues,
+        'timestamp': timezone.now().timestamp()
     }
-
     return render(request, 'crud/create_chart.html', context)
 
 

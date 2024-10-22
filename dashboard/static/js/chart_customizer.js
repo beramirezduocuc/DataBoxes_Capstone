@@ -227,7 +227,6 @@ window.addEventListener("load", async () => {
     updateWidthValue();
     populateChartOptions();
     updateFormFields(); 
-    console.log(chartNumbers)
 });
 
 const getOptionChart = async (formData) => {
