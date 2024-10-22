@@ -22,17 +22,32 @@ def dashboard(request):
 def get_chart(request):
     if request.method == 'POST':
         try:
+            coindata_response = get_coin_data(request)
+            coindata_json = json.loads(coindata_response.content)
+            coin_prices_name = coindata_json.get('coin_prices', []) #<-- Parsear los nombres
+            coin_timestamps_name = coindata_json.get('coin_timestamps', [])
             data = json.loads(request.body)  
             params = {**data}
 
             series = [
-                [randrange(100, 400) for _ in range(7)] for _ in range(3)
+                coindata_json['coin_prices']
+            #    [randrange(100, 400) for _ in range(7)] for _ in range(3)
             ]
+            if not isinstance(series[0], list):
+                series = [series] 
 
             series_data = [
                 {'name': f'Variable {i+1}', 'data': serie} 
                 for i, serie in enumerate(series)
             ]
+            #para mañana: como mostrar nombres en el grafico.
+            #solucion probable. parsear los nombres, meterlos en una lista
+            #y titulo X y titulo Y
+            #eso O poner campos para asignar nombres dentro de personalizacion
+            # ;;
+
+            #prices = [float(entry['price']) for entry in coin_prices_name]  
+            #timestamps = [entry['timestamp'] for entry in coin_timestamps_name]
 
             chart = {
                 'grid': {
@@ -56,7 +71,7 @@ def get_chart(request):
                 'xAxis': [
                     {
                         'type': "category",
-                        'data': ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+                        'data': coindata_json['coin_timestamps']
                     }
                 ],
                 'yAxis': [
@@ -132,6 +147,27 @@ def create_chart(request):
     }
     return render(request, 'crud/create_chart.html', context)
 
+
+
+
+def get_coin_data(request):
+    api_key = 'coinrankingd36bd1d040b13258dcebca59a6ec428c217e4d0bbac4a5ae'
+    url = 'https://api.coinranking.com/v2/coin/Qwsogvtv82FCd/history?timePeriod=1h'
+    headers = {
+        'x-access-token': api_key
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    coin_prices = [entry['price'] for entry in data['data']['history']]
+    coin_timestamps = [entry['timestamp'] for entry in data['data']['history']]
+
+    context = {
+        'coin_prices': coin_prices,
+        'coin_timestamps': coin_timestamps
+    }
+
+    return JsonResponse(context, safe=False)
 
 
 
