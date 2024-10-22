@@ -6,46 +6,31 @@ from random import randrange
 from django.utils import timezone
 
 from django.http import JsonResponse
-import requests
-
 def dashboard(request):
     username = request.user.nombre
     cloud_ping_url = 'https://southamerica-west1-databuckets-437414.cloudfunctions.net/saludar'
     try:
         response = requests.get(cloud_ping_url)
-        
-        if response.status_code == 200:
-        
-            data = response.json()
-            column1 = data.get('column1')
-            column2 = data.get('column2')
-            column3 = data.get('column3')
-        else:
-            column1, column2, column3 = 'Error', 'Error', 'Error'
+        saludo = response.text 
     except requests.RequestException as e:
-        column1, column2, column3 = 'error de conexion con cloud', '', ''
+        saludo = 'error de conexion con cloud'
         
-    context = {
-        'username': username,
-        'column1': column1,
-        'column2': column2,
-        'column3': column3
-    }
+    context = {'username' : username,
+                'ola' : saludo}
     return render(request, 'dashboard/dashboard.html', context)
-
 
 def get_chart(request):
     if request.method == 'POST':
         try:
-            coindata_response = get_coin_data(request)
-            coindata_json = json.loads(coindata_response.content)
-            coin_prices_name = coindata_json.get('coin_prices', []) #<-- Parsear los nombres
-            coin_timestamps_name = coindata_json.get('coin_timestamps', [])
+            #coindata_response = get_coin_data(request)
+            #coindata_json = json.loads(coindata_response.content)
+            #coin_prices_name = coindata_json.get('coin_prices', []) #<-- Parsear los nombres
+            #coin_timestamps_name = coindata_json.get('coin_timestamps', [])
             data = json.loads(request.body)  
             params = {**data}
 
             series = [
-            #   coindata_json['coin_prices']
+            #    coindata_json['coin_prices']
                 [randrange(100, 400) for _ in range(7)] for _ in range(2)
             ]
             if not isinstance(series[0], list):
@@ -55,6 +40,7 @@ def get_chart(request):
                 {'name': f'Variable {i+1}', 'data': serie} 
                 for i, serie in enumerate(series)
             ]
+            
             #para mañana: como mostrar nombres en el grafico.
             #solucion probable. parsear los nombres, meterlos en una lista
             #y titulo X y titulo Y
@@ -122,9 +108,6 @@ def get_chart(request):
                     'symbolSize': params.get('graph_detail_width', 4),
                     'barWidth': params.get('graph_line_width', 10) if params['graph_type'] == 'bar' else None
                 })
-            
-
-            
             response_data = {
                 'chart':chart,
                 'chartNumbers':len(series_data),
@@ -153,7 +136,7 @@ def get_chart(request):
 
 def create_chart(request):
 
-    storedNumber = request.session.get('storedNumber')
+    storedNumber = request.session.get('storedNumber',1)
     chartValues = range(storedNumber)
     
     context = {

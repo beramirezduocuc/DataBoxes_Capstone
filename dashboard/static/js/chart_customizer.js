@@ -7,11 +7,15 @@ const detailWidthChoice = document.getElementById('detailWidthSelect');
 const legendChoice = document.getElementById('legendSelect');
 const chartTypeSelect = document.getElementById('chartTypeSelect'); 
 const stackChoice = document.getElementById('stackSelect');
+
+
 let chartNumbers;
 const selectedColor = [];  
 const selectedDetailColor = [];
 const chartColorSelectors = [];
 const detailColorSelectors = [];
+
+
 
 const colors = [
     { value: '#800020', label: 'Rojo' },
@@ -68,6 +72,7 @@ const fillAdditionalFields = () => {
     }, 1);
 
     for (let i = 0; i < chartNumbers; i++) {
+        
         const chartColorSelect = document.getElementById(`chartColorSelect${i}`);
         const detailColorSelect = document.getElementById(`detailColorSelect${i}`);
 
@@ -148,8 +153,9 @@ async function populateChartOptions() {
 const getFormValues = () => {
     let selectedColor = [];
     let selectedDetail = [];
-
+    let varNameInput = [];
     for (let i = 0; i < chartNumbers; i++) {
+        const varNameInput = document.getElementById(`varNameInput${i}`)
         const chartColorSelect = document.getElementById(`chartColorSelect${i}`);
         const detailColorSelect = document.getElementById(`detailColorSelect${i}`)
         if (chartColorSelect) {
@@ -169,6 +175,7 @@ const getFormValues = () => {
     let selectedDetailWidth = detailWidthChoice.value;
     let selectedLegend = legendChoice.value === 'true';
     let selectedStack = stackChoice.value === 'true';    
+    
 
     if (selectedColor === 'random') {
         selectedColor = getRandomColor(); 
