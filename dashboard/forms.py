@@ -11,3 +11,7 @@ class chartTypeForm(forms.Form):
     def clean_Tipo_de_grafico(self):
         data = self.cleaned_data['Tipo_de_grafico']
         return data.lower()  # Devuelve el valor en minúsculas
+
+
+class CSVUploadForm(forms.Form):
+    file = forms.FileField(label="Selecciona un archivo CSV")

@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse
+from django.utils import timezone
 import json
 import requests
 from random import randrange
-from django.utils import timezone
+import csv
+from .forms import CSVUploadForm
 
-from django.http import JsonResponse
 def dashboard(request):
+    #esto tiene que llamar a los graficos mas tarde, cloud ping -> cloud_ping_graficos(????)
     username = request.user.nombre
     cloud_ping_url = 'https://southamerica-west1-databuckets-437414.cloudfunctions.net/saludar'
     try:
@@ -31,7 +33,7 @@ def get_chart(request):
 
             series = [
             #    coindata_json['coin_prices']
-                [randrange(100, 400) for _ in range(7)] for _ in range(2)
+                [randrange(100, 400) for _ in range(7)] for _ in range(4)
             ]
             if not isinstance(series[0], list):
                 series = [series] 
@@ -40,8 +42,8 @@ def get_chart(request):
                 {'name': f'Variable {i+1}', 'data': serie} 
                 for i, serie in enumerate(series)
             ]
-            
-            #para mañana: como mostrar nombres en el grafico.
+
+            #como mostrar nombres en el grafico.
             #solucion probable. parsear los nombres, meterlos en una lista
             #y titulo X y titulo Y
             #eso O poner campos para asignar nombres dentro de personalizacion
@@ -85,7 +87,7 @@ def get_chart(request):
 
             for i, serie in enumerate(series_data):
                 chart['series'].append({
-                    'name': serie['name'],
+                    'name': params.get('graph_variables_name')[i],
                     'data': serie['data'],
 
 
@@ -113,7 +115,7 @@ def get_chart(request):
                 'chartNumbers':len(series_data),
                 
             }
-            
+            print(data)
             request.session['storedNumber'] = len(series_data)
 
             return JsonResponse(response_data)
@@ -133,17 +135,65 @@ def get_chart(request):
 #en cuanto a la cantidad de variables/opciones
 #por lo que pueden haber 5 variables y las opciones disponibles
 #van a ser las anteriores a la sesion
+#actualmente no funciona 🫠
+
+# views.py
+import csv
+from django.shortcuts import render
+from .forms import CSVUploadForm
+from django.utils import timezone
 
 def create_chart(request):
-
-    storedNumber = request.session.get('storedNumber',1)
+    storedNumber = request.session.get('storedNumber', 2)
     chartValues = range(storedNumber)
-    
+    csvForm = CSVUploadForm(request.POST, request.FILES)
+    csv_data = []
+    row_name = []
+    initial_charts = 0  # Inicializar en 0 por defecto
+
     context = {
         'chartValues': chartValues,
-        'timestamp': timezone.now().timestamp()
+        'timestamp': timezone.now().timestamp(),
+        'csvForm': csvForm,
+        'csv_data': csv_data,
+        'row_name': row_name,
+        'initial_charts': initial_charts,  # Asegurarte de que esto siempre esté en el contexto
     }
+
+    if request.method == 'POST':
+        form = CSVUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            decoded_file = file.read().decode('utf-8').splitlines()
+            reader = csv.DictReader(decoded_file)
+
+            row_name = reader.fieldnames  # Obtener los nombres de las columnas
+            csv_data = [row for row in reader]
+            initial_charts = len(row_name)  # Asigna el número de columnas como initial_charts
+            
+            # Actualizar el contexto con los datos del CSV y los nombres de las columnas
+            context['csv_data'] = csv_data
+            context['row_name'] = row_name
+            context['initial_charts'] = initial_charts
+
     return render(request, 'crud/create_chart.html', context)
+
+
+def upload_csv(request):
+    if request.method == 'POST':
+        csvForm = CSVUploadForm(request.POST, request.FILES)
+        if csvForm.is_valid():
+            file = request.FILES['file']
+            decoded_file = file.read().decode('utf-8').splitlines()
+            reader = csv.DictReader(decoded_file)
+            
+            csv_data = [row for row in reader]
+            
+            return render(request, 'upload/display_csv.html', {'csv_data': csv_data})
+    else:
+        csvForm = CSVUploadForm()
+    
+    return render(request, 'upload/upload_csv.html', {'csvForm': csvForm})
 
 
 
@@ -169,6 +219,8 @@ def get_coin_data(request):
 
 
 
+
+#Cambiar el nombre de este mas tarde a "default_chart" o algo asi
 def line_chart(request):
     return render(request, 'charts/line_chart.html')
 

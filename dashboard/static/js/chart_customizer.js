@@ -153,16 +153,25 @@ async function populateChartOptions() {
 const getFormValues = () => {
     let selectedColor = [];
     let selectedDetail = [];
-    let varNameInput = [];
+    let selectedNameInput = [];
+    let nombreDefaultVariables = [];
+
     for (let i = 0; i < chartNumbers; i++) {
         const varNameInput = document.getElementById(`varNameInput${i}`)
         const chartColorSelect = document.getElementById(`chartColorSelect${i}`);
         const detailColorSelect = document.getElementById(`detailColorSelect${i}`)
+        
+        nombreDefaultVariables.push(`Variable ${i}`)
+
         if (chartColorSelect) {
             selectedColor.push(chartColorSelect.value);
         }
         if (detailColorSelect) {
             selectedDetail.push(detailColorSelect.value);
+        }
+        if(varNameInput){
+            
+            selectedNameInput.push(varNameInput.value);
         }
     };
     //esta es la unica parte en la que es necesario reutilizar el for
@@ -197,6 +206,7 @@ const getFormValues = () => {
         selectedDetailWidth,
         selectedLegend,
         selectedStack,
+        selectedNameInput
     };
 };
 
@@ -213,7 +223,9 @@ chartForm.addEventListener('change', async function () {
 const updateWidthValue = () => {
     widthValueDisplay.textContent = `Ancho de línea: ${widthChoice.value}`;
     detailWidthDisplay.textContent = `Ancho de detalles: ${detailWidthChoice.value}`;
-};
+
+}
+;
 
 
 window.addEventListener("load", async () => {
@@ -227,6 +239,7 @@ window.addEventListener("load", async () => {
         selectedDetailWidth: 10,
         selectedLegend: true,
         selectedStack: false,
+        selectedNameInput: "VVVVVVV",
     };
     
     await initChart(defaultFormData);
@@ -252,7 +265,8 @@ const getOptionChart = async (formData) => {
                 graph_line_width: formData.selectedWidth,
                 graph_detail_width: formData.selectedDetailWidth,
                 graph_legend_show: formData.selectedLegend,
-                graph_stack: formData.selectedStack
+                graph_stack: formData.selectedStack,
+                graph_variables_name : formData.selectedNameInput
             })
         })
 

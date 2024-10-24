@@ -1,0 +1,21 @@
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
+</head>
+{% block content %}
+<body class="flex">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ csvForm.as_p }}
+        <button type="submit">Subir CSV</button>
+    </form>
+</body>
+{% endblock content %}
+</html>
