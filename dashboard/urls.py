@@ -9,5 +9,6 @@ urlpatterns = [
     path('create_chart/', views.create_chart, name='create_chart'),
     path('temp_csv/', views.upload_csv, name="upload_csv"),                                                    
     path('coin/', views.get_coin_data, name='coin'),
+    path('filtro/', views.filtrar_datos, name='filtrar')
 ]
 #Eliminar coin mas tarde, era solo test

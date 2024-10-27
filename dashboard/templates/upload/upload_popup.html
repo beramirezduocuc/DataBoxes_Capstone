@@ -10,12 +10,34 @@
     <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
 </head>
 {% block content %}
-<body class="flex">
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ csvForm.as_p }}
-        <button type="submit">Subir CSV</button>
-    </form>
+<body class="flex justify-center items-center h-screen bg-gray-100 ">
+    <body class="flex justify-center items-center h-screen bg-gray-100">
+        <form method="post" enctype="multipart/form-data" class="space-y-4 mx-auto"> 
+            {% csrf_token %}
+            
+            <div class="flex flex-col items-center justify-center">
+                <label for="file-upload" class="cursor-pointer bg-gray-200 text-gray-600 font-bold px-4 py-2 rounded-md hover:bg-white">
+                    Seleccionar archivo
+                </label>
+                {{ csvForm.file }} 
+                <span id="file-name" class="mt-2 text-gray-500">No file selected</span>
+                <button type="submit" class="bg-orange-200 text-gray-400 font-bold px-4 py-2 rounded-md flex mt-9 hover:bg-orange-400 hover:text-gray-800">
+                    Subir CSV
+                </button>
+            </div>
+        </form>
+    
+
+    <script>
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : "Ningun archivo seleccionado";
+            document.getElementById("file-name").textContent = fileName;
+        }
+    </script>
 </body>
+
+
 {% endblock content %}
 </html>
+
+

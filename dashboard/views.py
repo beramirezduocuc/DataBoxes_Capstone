@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from django.utils import timezone
 import json
+import pandas as pd
 import requests
 from random import randrange
 import csv
@@ -134,14 +135,30 @@ def get_chart(request):
 #si llega a usar cache, la pagina no se actualiza correctamente
 #en cuanto a la cantidad de variables/opciones
 #por lo que pueden haber 5 variables y las opciones disponibles
-#van a ser las anteriores a la sesion
-#actualmente no funciona 🫠
+#van a ser las anteriores a la sesion actual
+#(no funciona 🫠)
 
-# views.py
-import csv
-from django.shortcuts import render
-from .forms import CSVUploadForm
-from django.utils import timezone
+# views.pycsrftoken
+
+def filtrar_datos(request):
+    if request.method == 'POST':
+        # Parsear la lista de variables seleccionadas desde el JSON
+        data = json.loads(request.body)
+        variables_seleccionadas = data.get('variables', [])
+
+        # Cargar tus datos originales (asegúrate de cambiar la ruta a tu archivo)
+        df = pd.read_csv('ruta/a/tsv')
+
+        # Filtrar el DataFrame para conservar solo las columnas seleccionadas
+        df_filtrado = df[variables_seleccionadas]
+
+        # Enviar los primeros registros del DataFrame filtrado como respuesta
+        df_head = df_filtrado.head().to_json(orient='split')
+        return JsonResponse({'data': df_head})
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
 
 def create_chart(request):
     storedNumber = request.session.get('storedNumber', 2)
@@ -149,7 +166,7 @@ def create_chart(request):
     csvForm = CSVUploadForm(request.POST, request.FILES)
     csv_data = []
     row_name = []
-    initial_charts = 0  # Inicializar en 0 por defecto
+    initial_charts = 0 
 
     context = {
         'chartValues': chartValues,
@@ -157,7 +174,7 @@ def create_chart(request):
         'csvForm': csvForm,
         'csv_data': csv_data,
         'row_name': row_name,
-        'initial_charts': initial_charts,  # Asegurarte de que esto siempre esté en el contexto
+        'initial_charts': initial_charts,  
     }
 
     if request.method == 'POST':
@@ -167,11 +184,12 @@ def create_chart(request):
             decoded_file = file.read().decode('utf-8').splitlines()
             reader = csv.DictReader(decoded_file)
 
-            row_name = reader.fieldnames  # Obtener los nombres de las columnas
+            row_name = reader.fieldnames  
             csv_data = [row for row in reader]
-            initial_charts = len(row_name)  # Asigna el número de columnas como initial_charts
+            initial_charts = len(row_name)  
+            displayFrame = pd.DataFrame(reader).head(10)
             
-            # Actualizar el contexto con los datos del CSV y los nombres de las columnas
+            context['displayFrame'] = displayFrame
             context['csv_data'] = csv_data
             context['row_name'] = row_name
             context['initial_charts'] = initial_charts

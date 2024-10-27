@@ -11,26 +11,26 @@
 </head>
 {% block content %}
 <body>
-
-
-<table border="1">
-    <thead>
-        <tr>
-            {% for key in csv_data.0.keys %}
-                <th>{{ key }}</th>
+    <table>
+        <thead>
+            <tr>
+                {% for name in row_name %}
+                    <th class="border border-gray-400 font-bold">{{ name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in csv_data|slice:":50" %}
+            <tr>
+                {% for value in row.values %}
+                    <td class="border border-gray-400 p-4
+                    ">{{ value }}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in csv_data %}
-        <tr>
-            {% for value in row.values %}
-                <td>{{ value }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </tbody>
-
+        </tbody>
+    </table>
+    
 </table>
 
 <!-- Botón para enviar datos en formato JSON -->
