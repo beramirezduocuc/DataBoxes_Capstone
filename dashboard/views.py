@@ -7,9 +7,12 @@ import requests
 from random import randrange
 import csv
 from .forms import CSVUploadForm
+from django.core.files.storage import default_storage
+
 
 def dashboard(request):
     #esto tiene que llamar a los graficos mas tarde, cloud ping -> cloud_ping_graficos(????)
+    #parametros guardados en la nube????????
     username = request.user.nombre
     cloud_ping_url = 'https://southamerica-west1-databuckets-437414.cloudfunctions.net/saludar'
     try:
@@ -140,25 +143,45 @@ def get_chart(request):
 
 # views.pycsrftoken
 
+import pandas as pd
+from django.http import JsonResponse
+
+
 def filtrar_datos(request):
     if request.method == 'POST':
-        # Parsear la lista de variables seleccionadas desde el JSON
-        data = json.loads(request.body)
-        variables_seleccionadas = data.get('variables', [])
+        variables_seleccionadas = json.loads(request.POST.get('variables', '[]'))  # Obtiene las variables seleccionadas
+        print("Solicitud POST recibida en /dashboard/upload/")
+        file_path = request.session.get('uploaded_file_path')
+        if not file_path:
+            return JsonResponse({'error': 'Archivo no encontrado'}, status=404)
 
-        # Cargar tus datos originales (asegúrate de cambiar la ruta a tu archivo)
-        df = pd.read_csv('ruta/a/tsv')
-
-        # Filtrar el DataFrame para conservar solo las columnas seleccionadas
+        df = pd.read_csv(file_path, delimiter='\t')
         df_filtrado = df[variables_seleccionadas]
-
-        # Enviar los primeros registros del DataFrame filtrado como respuesta
         df_head = df_filtrado.head().to_json(orient='split')
+
+        default_storage.delete(file_path)
+        del request.session['uploaded_file_path']
+
         return JsonResponse({'data': df_head})
     else:
-        return JsonResponse({'error': 'Método no permitido'}, status=405)
+        print("Solicitud GET recibida con errores en /dashboard/upload/")
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-
+def upload_csv(request):
+    if request.method == 'POST':
+        csvForm = CSVUploadForm(request.POST, request.FILES)
+        if csvForm.is_valid():
+            file = request.FILES['file']
+            decoded_file = file.read().decode('utf-8').splitlines()
+            reader = csv.DictReader(decoded_file)
+            
+            csv_data = [row for row in reader]
+            
+            return render(request, 'upload/display_csv.html', {'csv_data': csv_data})
+    else:
+        csvForm = CSVUploadForm()
+    
+    return render(request, 'upload/upload_csv.html', {'csvForm': csvForm})
 
 def create_chart(request):
     storedNumber = request.session.get('storedNumber', 2)
@@ -196,27 +219,8 @@ def create_chart(request):
 
     return render(request, 'crud/create_chart.html', context)
 
-
-def upload_csv(request):
-    if request.method == 'POST':
-        csvForm = CSVUploadForm(request.POST, request.FILES)
-        if csvForm.is_valid():
-            file = request.FILES['file']
-            decoded_file = file.read().decode('utf-8').splitlines()
-            reader = csv.DictReader(decoded_file)
-            
-            csv_data = [row for row in reader]
-            
-            return render(request, 'upload/display_csv.html', {'csv_data': csv_data})
-    else:
-        csvForm = CSVUploadForm()
-    
-    return render(request, 'upload/upload_csv.html', {'csvForm': csvForm})
-
-
-
-
 def get_coin_data(request):
+
     api_key = 'coinrankingd36bd1d040b13258dcebca59a6ec428c217e4d0bbac4a5ae'
     url = 'https://api.coinranking.com/v2/coin/Qwsogvtv82FCd/history?timePeriod=1h'
     headers = {
@@ -234,10 +238,6 @@ def get_coin_data(request):
     }
 
     return JsonResponse(context, safe=False)
-
-
-
-
 #Cambiar el nombre de este mas tarde a "default_chart" o algo asi
 def line_chart(request):
     return render(request, 'charts/line_chart.html')
