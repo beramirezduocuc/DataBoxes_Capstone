@@ -57,38 +57,70 @@ document.addEventListener("DOMContentLoaded", () => {
     const csrftoken = getCookie('csrftoken');
     let filtro_url = "http://127.0.0.1:8000/dashboard/temp_csv/";
 
+
+    const submitSelectionButton = document.getElementById("submitSelection");
+    
     if (submitSelectionButton) {
         submitSelectionButton.addEventListener("click", (event) => {
-            event.preventDefault(); 
-    
-            const formData = new FormData(document.getElementById("fileForm"));
-            formData.append('variables', JSON.stringify(variable_selection));
-    
+            event.preventDefault();
+        
+            const formData = new FormData();
+            const fileInput = document.getElementById("file-upload");
+            
+            if (!fileInput.files[0]) {
+                console.error("Archivo no seleccionado");
+                return;
+            }
+        
+            formData.append('file', fileInput.files[0]);
+            formData.append('variable_selection', JSON.stringify(variable_selection));
+            console.log("Enviando archivo y variables:", fileInput.files[0], variable_selection);
+        
             fetch(filtro_url, {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': csrftoken  
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: formData
             })
             .then(response => {
-                // Verificar el contenido de la respuesta
-                return response.text(); // Cambiar a .text() para inspeccionar el contenido
-            })
-            .then(text => {
-                console.log("Respuesta del servidor:", text); // Ver qué devuelve el servidor
-                // Intentar analizar como JSON solo si la respuesta es válida
-                try {
-                    const data = JSON.parse(text);
-                    console.log("Datos recibidos del servidor:", data);
-                } catch (e) {
-                    console.error("Error al analizar JSON:", e);
+                if (!response.ok) {
+                    throw new Error(`Error en la respuesta del servidor, código: ${response.status}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Datos recibidos del servidor:", data);
             })
             .catch(error => console.error("Error al enviar las variables:", error));
-            
         });
+        
     } else {
         console.error("Botón de confirmación de selección (submitSelection) no encontrado.");
     }
+    
+
+    const fileForm = document.getElementById('fileForm');
+    fileForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(fileForm);
+
+    fetch(filtro_url, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.csv_data) {
+            window.location.href = 'http://127.0.0.1:8000/dashboard/create_chart/';
+        }
+    })
+    .catch(error => console.error("Error al enviar el archivo:", error));
+});
+
 });    

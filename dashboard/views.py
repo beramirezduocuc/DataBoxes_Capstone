@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http.response import JsonResponse
 from django.utils import timezone
 import json
@@ -24,7 +24,6 @@ def dashboard(request):
     context = {'username' : username,
                 'ola' : saludo}
     return render(request, 'dashboard/dashboard.html', context)
-
 def get_chart(request):
     if request.method == 'POST':
         try:
@@ -119,7 +118,7 @@ def get_chart(request):
                 'chartNumbers':len(series_data),
                 
             }
-            print(data)
+            #print(data)
             request.session['storedNumber'] = len(series_data)
 
             return JsonResponse(response_data)
@@ -143,81 +142,119 @@ def get_chart(request):
 
 # views.pycsrftoken
 
-import pandas as pd
-from django.http import JsonResponse
-
 
 def filtrar_datos(request):
     if request.method == 'POST':
-        variables_seleccionadas = json.loads(request.POST.get('variables', '[]'))  # Obtiene las variables seleccionadas
-        print("Solicitud POST recibida en /dashboard/upload/")
-        file_path = request.session.get('uploaded_file_path')
-        if not file_path:
+        # Obtén las variables seleccionadas desde el POST
+        variables_seleccionadas = json.loads(request.POST.get('variables', '[]'))
+        
+        # Obtiene el archivo CSV desde los archivos adjuntos
+        csv_file = request.FILES.get('file')
+        if not csv_file:
             return JsonResponse({'error': 'Archivo no encontrado'}, status=404)
 
-        df = pd.read_csv(file_path, delimiter='\t')
-        df_filtrado = df[variables_seleccionadas]
+        # Procesa el archivo CSV
+        decoded_file = csv_file.read().decode('utf-8').splitlines()
+        reader = csv.DictReader(decoded_file)
+        df = pd.DataFrame(reader)
+
+        # Filtra el DataFrame por las variables seleccionadas
+        try:
+            df_filtrado = df[variables_seleccionadas]
+        except KeyError:
+            return JsonResponse({'error': 'Las variables seleccionadas no son válidas'}, status=400)
+        
+        # Devuelve los datos filtrados
         df_head = df_filtrado.head().to_json(orient='split')
-
-        default_storage.delete(file_path)
-        del request.session['uploaded_file_path']
-
         return JsonResponse({'data': df_head})
-    else:
-        print("Solicitud GET recibida con errores en /dashboard/upload/")
+    
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+def slice_csv(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        variable_selection = request.POST.get('variable_selection')
+        
+        if not file or not variable_selection:
+            return {'error': 'Archivo o variable de selección no encontrados'}
+
+        decoded_file = file.read().decode('utf-8').splitlines()
+        reader = csv.DictReader(decoded_file)
+        selected_columns = variable_selection.split(',') 
+        sliced_data = [{col: row[col] for col in selected_columns if col in row} for row in reader]
+        print('variable_selection',variable_selection)
+        print('selected_columns',selected_columns)
+        #print(sliced_data)
+        return {
+            'sliced_data': sliced_data,
+            'selected_columns': selected_columns,
+        }
+
 
 def upload_csv(request):
     if request.method == 'POST':
+        file = request.FILES.get('file')
+        variable_selection = request.POST.get('variable_selection')
         csvForm = CSVUploadForm(request.POST, request.FILES)
-        if csvForm.is_valid():
-            file = request.FILES['file']
-            decoded_file = file.read().decode('utf-8').splitlines()
-            reader = csv.DictReader(decoded_file)
-            
-            csv_data = [row for row in reader]
-            
-            return render(request, 'upload/display_csv.html', {'csv_data': csv_data})
-    else:
-        csvForm = CSVUploadForm()
-    
-    return render(request, 'upload/upload_csv.html', {'csvForm': csvForm})
+
+        if not file:
+            return JsonResponse({'error': 'Archivo o lista no encontrado'}, status=400)
+
+        sliced_csv = None
+        sliced_data = None
+        # Verifica si hay una selección de variables
+        if variable_selection:
+            sliced_csv = slice_csv(request)
+            sliced_data = sliced_csv.get('sliced_data')
+
+        # Lee el archivo CSV
+        decoded_file = file.read().decode('utf-8').splitlines()
+        reader = csv.DictReader(decoded_file)
+
+        csv_data = [row for row in reader]
+        row_name = reader.fieldnames
+
+        # Almacena los datos y nombres de columnas en la sesión
+        request.session['csv_data'] = csv_data
+        request.session['row_name'] = row_name
+        #print('csvdata:',csv_data)
+        context = {
+            'csv_data': csv_data,
+            'row_name': row_name,
+            'sliced_data': sliced_data,
+        }
+
+        #print(sliced_data)
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse(context, status=200)
+
+        return redirect('create_chart')
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 
 def create_chart(request):
     storedNumber = request.session.get('storedNumber', 2)
     chartValues = range(storedNumber)
-    csvForm = CSVUploadForm(request.POST, request.FILES)
-    csv_data = []
-    row_name = []
-    initial_charts = 0 
+    csvForm = CSVUploadForm()
+    csv_data = request.session.get('csv_data', [])
+    row_name = request.session.get('row_name', [])
+    try:
+        initial_charts = len(row_name)
+    except:
+        initial_charts = 2
 
     context = {
         'chartValues': chartValues,
-        'timestamp': timezone.now().timestamp(),
         'csvForm': csvForm,
         'csv_data': csv_data,
         'row_name': row_name,
-        'initial_charts': initial_charts,  
+        'initial_charts': initial_charts,
     }
 
-    if request.method == 'POST':
-        form = CSVUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = request.FILES['file']
-            decoded_file = file.read().decode('utf-8').splitlines()
-            reader = csv.DictReader(decoded_file)
-
-            row_name = reader.fieldnames  
-            csv_data = [row for row in reader]
-            initial_charts = len(row_name)  
-            displayFrame = pd.DataFrame(reader).head(10)
-            
-            context['displayFrame'] = displayFrame
-            context['csv_data'] = csv_data
-            context['row_name'] = row_name
-            context['initial_charts'] = initial_charts
-
     return render(request, 'crud/create_chart.html', context)
+
 
 def get_coin_data(request):
 
