@@ -175,21 +175,33 @@ def slice_csv(request):
     if request.method == 'POST':
         file = request.FILES.get('file')
         variable_selection = request.POST.get('variable_selection')
-        
+        print('Archivo recibido:', file)
+
         if not file or not variable_selection:
             return {'error': 'Archivo o variable de selección no encontrados'}
 
         decoded_file = file.read().decode('utf-8').splitlines()
         reader = csv.DictReader(decoded_file)
-        selected_columns = variable_selection.split(',') 
-        sliced_data = [{col: row[col] for col in selected_columns if col in row} for row in reader]
-        print('variable_selection',variable_selection)
-        print('selected_columns',selected_columns)
-        #print(sliced_data)
+        cleaned_headers = [header.strip() for header in reader.fieldnames]
+        selected_columns = [col.strip('"[]') for col in variable_selection.split(',')]
+
+
+        print("Encabezados limpios:", cleaned_headers)
+        print("Columnas seleccionadas:", selected_columns)
+
+        sliced_data = []
+        for row in reader:
+            cleaned_row = {header.strip(): value for header, value in row.items()}  
+            data_row = {col: cleaned_row.get(col, '') for col in selected_columns if col in cleaned_row}
+            sliced_data.append(data_row)
+
+
         return {
             'sliced_data': sliced_data,
             'selected_columns': selected_columns,
         }
+
+        
 
 
 def upload_csv(request):
@@ -197,18 +209,18 @@ def upload_csv(request):
         file = request.FILES.get('file')
         variable_selection = request.POST.get('variable_selection')
         csvForm = CSVUploadForm(request.POST, request.FILES)
-
+        #print('variable_selection:',variable_selection)
         if not file:
             return JsonResponse({'error': 'Archivo o lista no encontrado'}, status=400)
-
+        print('Funcionando aqui punto 1')
         sliced_csv = None
         sliced_data = None
-        # Verifica si hay una selección de variables
+        
         if variable_selection:
             sliced_csv = slice_csv(request)
             sliced_data = sliced_csv.get('sliced_data')
-
-        # Lee el archivo CSV
+            
+            print('Funcionando aqui punto 2')
         decoded_file = file.read().decode('utf-8').splitlines()
         reader = csv.DictReader(decoded_file)
 
