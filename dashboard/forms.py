@@ -16,9 +16,9 @@ class CSVUploadForm(forms.Form):
     file = forms.FileField(
         label="Seleccione un archivo en formato CSV",
         widget=forms.FileInput(attrs={
-            'id': 'file-upload',  # Atributo ID para el input
-            'class': 'hidden',    # Ocultar el input de archivo
-            'onchange': 'updateFileName(this)'  # Cambia el nombre del archivo
+            'id': 'file-upload',  
+            'class': 'hidden',    
+            'onchange': 'updateFileName(this)'  
         })
     )
 

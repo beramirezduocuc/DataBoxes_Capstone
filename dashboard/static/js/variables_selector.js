@@ -1,7 +1,3 @@
-
-
-let submitSelectionButton = document.getElementById("submitSelection");
-
 document.addEventListener("DOMContentLoaded", () => {
     let initial_variable_number_raw = document.getElementById('initial_variable_numbers');
     let initial_variable_number = initial_variable_number_raw ? initial_variable_number_raw.value : 0; 
@@ -56,26 +52,26 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const csrftoken = getCookie('csrftoken');
     let filtro_url = "http://127.0.0.1:8000/dashboard/temp_csv/";
-
+    //Segundo Boton
 
     const submitSelectionButton = document.getElementById("submitSelection");
     
     if (submitSelectionButton) {
         submitSelectionButton.addEventListener("click", (event) => {
-            event.preventDefault();
-        
+            event.preventDefault();  // Previene el envío predeterminado si es un formulario
+    
             const formData = new FormData();
             const fileInput = document.getElementById("file-upload");
-            
+    
             if (!fileInput.files[0]) {
                 console.error("Archivo no seleccionado");
                 return;
             }
-        
+    
             formData.append('file', fileInput.files[0]);
             formData.append('variable_selection', JSON.stringify(variable_selection));
             console.log("Enviando archivo y variables:", fileInput.files[0], variable_selection);
-        
+    
             fetch(filtro_url, {
                 method: 'POST',
                 headers: {
@@ -85,22 +81,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: formData
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error en la respuesta del servidor, código: ${response.status}`);
+                console.log(`Código de respuesta del servidor: ${response.status}`);
+                if (response.ok) {
+                    console.log("Respuesta exitosa, recargando página...");
+                    window.location.href = window.location.href; // Esto forzará una recarga completa
+                } else {
+                    console.error(`Error en la respuesta del servidor, código: ${response.status}`);
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Datos recibidos del servidor:", data);
             })
             .catch(error => console.error("Error al enviar las variables:", error));
         });
-        
     } else {
         console.error("Botón de confirmación de selección (submitSelection) no encontrado.");
     }
     
-
+    //Primer Boton
     const fileForm = document.getElementById('fileForm');
     fileForm.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -120,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = 'http://127.0.0.1:8000/dashboard/create_chart/';
         }
     })
+    
     .catch(error => console.error("Error al enviar el archivo:", error));
 });
 

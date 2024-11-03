@@ -7,12 +7,13 @@
 <body class="flex flex-col h-screen bg-gray-200">
     <!--Subida de datos (inicio)-->
     <div class="flex border my-4 justify-self-center
-    w-[22rem] h-max z-[60] flex-col space-y-6
-    rounded-md absolute ml-3 bg-gray-100 o
-    xl:ml-96">
-
+    w-[22rem] sm:w-[38rem] md:w-[46.3rem] h-max z-[60] flex-col space-y-6
+    rounded-md absolute ml-3 bg-gray-100 border-red-500
+    xl:ml-96
+    xl:">
 
         {% include 'upload/upload_popup.html' %}
+
         <div class="place-self-center w-80 h-80 overflow-auto text-wrap border border-gray-300 rounded-md">
             {% include 'upload/display_csv.html' %}
         </div>
@@ -121,7 +122,7 @@
                         <input id="varNameInput{{ i }}" type="text" class="w-72 border-gray-200 border rounded-lg">
                     </div>
                     {% endfor %}
-           
+
             </form>
         </div>
     </div>

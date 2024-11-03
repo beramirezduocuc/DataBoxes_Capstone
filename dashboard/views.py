@@ -7,7 +7,6 @@ import requests
 from random import randrange
 import csv
 from .forms import CSVUploadForm
-from django.core.files.storage import default_storage
 
 
 def dashboard(request):
@@ -195,11 +194,15 @@ def slice_csv(request):
             data_row = {col: cleaned_row.get(col, '') for col in selected_columns if col in cleaned_row}
             sliced_data.append(data_row)
 
-
-        return {
-            'sliced_data': sliced_data,
-            'selected_columns': selected_columns,
-        }
+        request.session['csv_data'] = sliced_data
+        request.session['row_name'] = selected_columns
+        
+        return redirect('create_chart')
+        
+        #return {
+        #    'sliced_data': sliced_data,
+        #    'selected_columns': selected_columns,
+        #}
 
         
 

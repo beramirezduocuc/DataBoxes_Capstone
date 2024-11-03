@@ -1834,6 +1834,26 @@ select {
     width: 90%;
   }
 
+  .sm\:w-36 {
+    width: 9rem;
+  }
+
+  .sm\:w-\[\] {
+    width: ;
+  }
+
+  .sm\:w-\[30rem\] {
+    width: 30rem;
+  }
+
+  .sm\:w-\[35rem\] {
+    width: 35rem;
+  }
+
+  .sm\:w-\[38rem\] {
+    width: 38rem;
+  }
+
   .sm\:px-\[5\%\] {
     padding-left: 5%;
     padding-right: 5%;
@@ -1865,6 +1885,38 @@ select {
 
   .md\:w-\[35rem\] {
     width: 35rem;
+  }
+
+  .md\:w-\[\] {
+    width: ;
+  }
+
+  .md\:w-\[48rem\] {
+    width: 48rem;
+  }
+
+  .md\:w-\[44rem\] {
+    width: 44rem;
+  }
+
+  .md\:w-\[45rem\] {
+    width: 45rem;
+  }
+
+  .md\:w-\[47rem\] {
+    width: 47rem;
+  }
+
+  .md\:w-\[46rem\] {
+    width: 46rem;
+  }
+
+  .md\:w-\[46\.1rem\] {
+    width: 46.1rem;
+  }
+
+  .md\:w-\[46\.3rem\] {
+    width: 46.3rem;
   }
 
   .md\:space-x-6 > :not([hidden]) ~ :not([hidden]) {
