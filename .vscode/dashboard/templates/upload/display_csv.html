@@ -1,0 +1,43 @@
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
+</head>
+{% block content %}
+<body>
+    <table>
+        <thead>
+            <tr>
+                {% for name in row_name %}
+                    <th class="border border-gray-400 font-bold">{{ name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in csv_data|slice:":50" %}
+            <tr>
+                {% for value in row.values %}
+                    <td class="border border-gray-400 p-4
+                    ">{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</table>
+
+<!-- Botón para enviar datos en formato JSON -->
+
+
+
+
+</body>
+{% endblock content %}
+</html>

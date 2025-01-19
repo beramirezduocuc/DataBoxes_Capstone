@@ -1,0 +1,143 @@
+{% extends 'landing/navbar.html' %}
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+{% block title %} Home {% endblock title %}
+<!DOCTYPE html>
+<html lang="en">
+{% block content %}
+<head>
+    <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<div class="h-screen w-screen">
+    {% include 'landing/navbar.html' %}  
+
+
+    <div class="w-full h-2/3 flex overflow-hidden ">
+        <div class="h-full flex flex-row flex-nowrap transition-all duration-500 ease-in-out" id="slider-inner">
+            
+
+            <!-- Slide 1 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+                <img src="{% static 'img/corp_img1.jpg' %}" alt="" class="w-full h-full object-cover opacity-80">
+                <div class="w-4/5 h-auto bg-black bg-opacity-40 flex flex-col p-6 pt-3 ml-4 z-10 gap-y-10 text-wrap self-center absolute bottom-10
+                            lg:w-3/5 lg:ml-10
+                            xl:h-auto 2xl:h-auto">
+            
+                    <p class="text-white text-4xl font-extrabold
+                                sm:text-5xl">
+                        Decisiones eficientes
+                    </p>
+                    <p class="text-white text-xl font-semibold
+                                sm:text-4xl sm:font-normal
+                                2xl:text-5xl">
+                        Cuando sabe lo que su empresa necesita, toma las decisiones correctas.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Slide 1 -->
+            <!-- Slide 2 -->
+            <div class="w-full h-full flex-shrink-0 relative">
+                <img src="{% static 'img/corp_img2.jpg' %}" alt="" class="w-full h-full object-cover opacity-80">
+                <div class="w-4/5 h-auto bg-black bg-opacity-40 flex flex-col p-6 pt-3 ml-4 z-10 gap-y-10 text-wrap self-center absolute bottom-10
+                            lg:w-3/5 lg:ml-10
+                            xl:h-auto 2xl:h-auto">
+            
+                    <p class="text-white text-4xl font-extrabold
+                                sm:text-5xl">
+                        No gaste mas tiempo
+                    </p>
+                    <p class="text-white text-xl font-semibold
+                                sm:text-4xl sm:font-normal
+                                2xl:text-5xl">
+                        Nosotros procesamos y visualizamos sus datos, mientras usted se enfoca en lo necesario.
+                    </p>
+                </div>
+            </div>
+            <!--<div> Slide 2 -->
+        </div>
+    </div>
+    
+
+    <div class="w-full h-max flex flex-col
+    xl:w-3/4 xl:mx-auto">
+
+        <span class="flex justify-center text-4xl font-extrabold pt-12 w-full self-center text-center">
+            ¿Por qué elegir DataBuckets?
+        </span>    
+    
+        <!-- Tarjetas -->
+        <div class="w-4/5 text-center py-10 px-5 mt-8 justify-center self-center space-y-3 shadow-none 
+        xl:flex 
+        xl:flex-row 
+        xl:w-full 
+        xl:space-y-0 
+        xl:gap-8">
+        
+        <!-- Tarjeta #1 -->
+        <div class="shadow-xl flex-grow flex-shrink w-full text-center py-10 px-5 justify-center self-center space-y-3 
+            xl:w-1/3
+            xl:min-h-full">
+            <div class="w-24 h-24 mx-auto bg-orange-200 bg-opacity-20 rounded-full flex justify-center items-center">
+                <i class="fa-solid fa-bullseye text-5xl"></i>
+            </div>
+            <p class="font-bold text-3xl font-deep-gray-custom">Datos de calidad</p>
+            <p class="text-xl font-gray-custom">Intentamos mejorar la calidad de sus datos en la mayor medida posible, 
+                para siempre tenga la ultima y mas reelevante información</p>
+        </div>
+    
+        <!-- Tarjeta #2 -->
+        <div class="shadow-xl flex-grow flex-shrink w-full text-center py-10 px-5 justify-center self-center space-y-3 
+            xl:w-1/3
+            xl:min-h-full">
+            <div class="w-24 h-24 mx-auto bg-orange-200 bg-opacity-20 rounded-full flex justify-center items-center">
+                <i class="fa-solid fa-chart-simple text-5xl"></i>
+            </div>
+            <p class="font-bold text-3xl font-deep-gray-custom">Gráficos dinámicos e interactivos</p>
+            <p class="text-xl font-gray-custom">A partir de los datos procesados, ofrecemos un servicio para generar gráficos con distintas opciones de visualización para usar en reportes</p>
+        </div>
+    
+        <!-- Tarjeta #3 -->
+        <div class="shadow-xl flex-grow flex-shrink w-full text-center py-10 px-5 justify-center self-center space-y-3 
+            xl:w-1/3
+            xl:min-h-full">
+            <div class="w-24 h-24 mx-auto bg-orange-200 bg-opacity-20 rounded-full flex justify-center items-center">
+                <i class="fa-solid fa-cloud text-5xl"></i>
+            </div>
+            <p class="font-bold text-3xl font-deep-gray-custom">Integración con API</p>
+            <p class="text-xl font-gray-custom">Servicio de API para recibir los resultados de tus datos directamente en tu aplicación o página web</p>
+        </div>
+    </div>
+    
+    
+        <!-- Texto y botón "Contratar" al final -->
+        <div class="flex flex-col space-y-10 px-7 mb-10 w-full">
+            
+            <p class="text-center font-extrabold font-deep-gray-custom text-4xl">
+                Contrate DataBuckets para su negocio
+            </p>
+            <a href="{% url 'user_register' %}" class="self-center w-4/5 h-24">
+            <button class="border border-orange-500 border-opacity-30 w-full h-24 text-center shadow-2xl self-center text-4xl font-black text-orange-500
+            hover:bg-orange-500
+            hover:text-white
+            transition-all 
+            duration-300 t
+            ransform hover:scale-105">
+                <p>Contratar</p>
+            </button>
+        </a>
+        </div>
+    </div>
+    
+
+<script src="{% static 'js/slider.js' %}"></script>
+
+
+{% endblock content %}
+</html>

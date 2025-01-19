@@ -1,0 +1,64 @@
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body class="h-full w-full flex justify-center">
+    <div class="flex h-[45rem]  w-3/4 border bg-white self-center justify-center flex-col rounded-lg space-y-3 shadow-2xl
+    lg:max-w-[50%]
+    xl:max-w-[35%]
+    pb-12
+    ">
+        
+
+    <div class="w-full h-1/4 flex-col flex mb-16 mt-20">
+        <div class="bg-orange-500 bg-opacity-20 rounded-full text-center w-[6.5rem] h-auto self-center">
+            <i class="fa-solid fa-bucket self-center justify-center my-4 text-7xl"></i>
+        </div>
+        <h1 class="self-center justify-center text-2xl font-bold">Inicio de sesion</h1>
+    </div>
+
+        <div id="message" class="self-center text-center text-red-400 font-semibold text-2xl">
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        
+        
+            <form action="" method=POST class="flex h-full w-full self-center rounded-lg flex-col">
+            {% csrf_token %}
+            <p class="ml-10 mb-2 font-semibold text-xl xl:ml-[10%]">Correo</p>
+                <input type="text" class="flex h-[20%] w-5/6 self-center rounded-lg 
+                xl:text-2xl
+                xl:w-[80%] xl:h-[15%]" name="username">
+
+
+                <p class="ml-10 mb-2 font-semibold text-xl xl:ml-[10%]">Contraseña</p>
+                <input type="password" class="flex h-[20%] w-5/6 self-center rounded-lg
+                xl:text-2xl
+                xl:w-[80%] xl:h-[15%]" name="password">
+                    <p class="text-xs text-orange-400 opacity-60 ml-10 mt-2 xl:ml-20">¿Olvidaste tu contraseña?</p>
+                <button type="submit" class="h-16 w-3/6 bg-white self-center mt-7 shadow-lg border border-black rounded-lg
+
+                xl:text-xl">Iniciar Sesion</button>
+            <!--<p class="self-center ml-3 opacity-30 text-gray-700">correo@ejemplo.com</p>-->
+        </form>
+
+
+        
+    </div>
+    <script src="{% static 'js/loginjs.js' %}"></script>
+
+</body>
+</html>
