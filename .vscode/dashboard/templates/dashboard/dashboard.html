@@ -1,0 +1,39 @@
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="flex h-screen bg-gray-200 ">
+    <div class="fixed top-0 left-0  h-full hidden lg:block z-50" id="sidebar">
+        {% include 'dash_bars/dash_sidebar.html' %}
+    </div>
+    
+    {% block content %}
+    <!-- nav+dash -->
+    <div class="flex flex-col w-full
+    lg:pl-[20rem]">
+        <div class="min-h-28 fixed top-0 w-full z-30 self-center
+        sm:w-[90%]
+        lg:w-[60%]"
+        id="navbar">
+            {% include 'dash_bars/dash_navbar.html' %}
+        </div>
+        <div class="flex items-center flex-col border mx-4 mt-24 space-y-6 pb-10
+        lg:ml-9
+        xl:mr-6">
+        {% include 'charts/line_chart.html' %}
+        </div>
+</div>
+
+<script type="text/javascript" src="{% static 'js/graph_loader.js' %}"></script>
+
+    
+</body>
+{% endblock content %}
+</html>
