@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@glidejs/glide": "^3.6.2",
+    "cross-env": "^7.0.3",
     "echarts": "^5.5.1",
     "tailwindcss": "^3.4.13",
     "tailwindcss-animated": "^1.1.2"
