@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user',
     'dashboard',
     'tailwind',
+    'edicion',
     'theme',
     'django_browser_reload',
 ]
@@ -87,20 +88,18 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-#Esto es un comentario de prueba
-
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'databuckets',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'post',
         'HOST': '127.0.0.1',
         'PORT': '',
     }
 }
-
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -126,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'es-CL'
 
 TIME_ZONE = 'UTC'
 

@@ -24,6 +24,7 @@ from django.contrib import admin
 from django.urls import path, include
 import landing.urls 
 import user.urls #por temas de compatibilidad, es el unico que no lleva alias
+import edicion.urls
 import dashboard.urls 
 from django.conf.urls import handler404
 
@@ -33,6 +34,7 @@ urlpatterns = [
     path('user/', include(user.urls)), 
     path('user/', include('django.contrib.auth.urls')),
     path('dashboard/', include(dashboard.urls)),
+    path('edicion/',include(edicion.urls)),
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
 ]

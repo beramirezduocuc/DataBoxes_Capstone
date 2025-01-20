@@ -4,87 +4,132 @@
 {% tailwind_css %}
 
 {% block content %}
-<body class="flex h-screen bg-gray-200">
-    <div class="fixed top-0 left-0  h-full hidden lg:block z-50" id="sidebar">
+<body class="flex flex-col h-screen bg-gray-200">
+    <!--Subida de datos (inicio)-->
+    <div class="flex border my-4 justify-self-center
+    w-[22rem] h-max z-[60] flex-col space-y-6
+    rounded-md absolute ml-3 bg-gray-100 o
+    xl:ml-96">
+
+
+        {% include 'upload/upload_popup.html' %}
+        <div class="place-self-center w-80 h-80 overflow-auto text-wrap border border-gray-300 rounded-md">
+            {% include 'upload/display_csv.html' %}
+        </div>
+        <p class="mt-7 text-center">Seleccione los datos a utilizar (max 7)</p>
+        <div class="w-[22rem] flex flex-row flex-wrap gap-6
+        content-center justify-center mx-auto overflow-auto pb-7">
+        
+        <input type="hidden" id="initial_variable_numbers" value="{{ initial_charts }}">
+            <!--al igual que el de abajo, este input existe unicamente para pasar un valor-->
+            {% for name in row_name %}
+
+            <div class="w-36 min-h-20 border border-gray-300 
+            flex place-self-center bg-slate-100 items-center 
+            rounded-md p-2 justify-between" id="variableSelector{{ forloop.counter0 }}" data-name="{{ name }}">
+                <p class="font-bold text-wrap w-16">{{ name }}</p>
+                <div id="variableContainer{{ forloop.counter0 }}" class="w-8 h-8 border border-slate-200 
+                bg-white flex rounded-md items-center justify-center"></div>
+            </div>
+            
+        {% endfor %}
+        <button id="submitSelection">Enviar Selección</button>
+        </div>
+
+
+    </div>
+
+
+    <!--Subida de datos (fin)-->
+
+
+
+    <div class="place-self-center w-80 h-80 overflow-auto text-wrap border border-red-500">
+        {% include 'upload/display_csv.html' %}
+    </div>
+
+    <div class="fixed top-0 left-0 h-full hidden lg:block z-50" id="sidebar">
         {% include 'dash_bars/dash_sidebar.html' %}
     </div>
-    
-    <!-- nav+dash -->
-    <div class="flex flex-col w-full
-    lg:pl-[20rem]">
-        <div class="min-h-28 fixed top-0 w-full z-30 self-center
-        sm:w-[90%]
-        lg:w-[60%]"
-        id="navbar">
+
+    <div class="flex flex-col w-full lg:pl-[20rem]">
+        <div class="min-h-28 fixed top-0 w-full z-30 self-center sm:w-[90%] lg:w-[60%]" id="navbar">
             {% include 'dash_bars/dash_navbar.html' %}
         </div>
 
-        <div class="flex items-center flex-col border mx-4 mt-24 space-y-6 pb-10
-        lg:ml-9
-        xl:mr-6">
-        {% include 'charts/line_chart.html' %}
+        <div class="flex items-center flex-col border mx-4 mt-24 space-y-6 pb-10 lg:ml-9 xl:mr-6">
+            {% include 'charts/line_chart.html' %}
         </div>
 
-        <div class="flex items-center flex-col border mx-4 space-y-6 bg-white rounded-lg shadow-lg
-        lg:ml-9
-        xl:mr-6">
+        <!-- Aquí empieza el contenedor para el formulario -->
+        <div class="flex flex-col items-center border mx-4 space-y-6 bg-white rounded-lg shadow-lg mb-9 lg:ml-9 xl:mr-6">
+            <form method="POST" id="chartForm" class="text-left text-[#344767] font-semibold flex flex-wrap w-full gap-4 px-4 py-4 justify-center md:space-x-6 lg:space-x-4 2xl:space-x-5">
+                {% csrf_token %}
+                <input class="hidden" type="number" id="chartNumbers" name="chartNumbers" min="1" value="{{ chartNumbers }}">
 
+                <div>
+                    <p>Tipo de gráfico</p>
+                    <select id="chartTypeSelect" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md xl:w-[13rem]"></select>
+                </div>
 
+                {% for i in chartValues %}
+                <div>
+                    <p>Color de variable {{ forloop.counter }}</p>
+                    <select id="chartColorSelect{{ i }}" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md xl:w-[13rem]"></select>
+                </div>
+                {% endfor %}
 
-        <div id="chartForm" class="text-left text-[#344767] font-semibold flex flex-wrap 
-        w-full gap-4 px-4 py-4 justify-center">
-        
-        <div>
-            <p>Tipo de gráfico</p>
-            <select id="chartTypeSelect" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
-        </div>
-        {% for i in chartValues %}
-        <div>
-            <p>Color de variable {{ forloop.counter }}</p>
-            <select id="chartColorSelect{{ i }}" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
-        </div>
-        {% endfor %}
-        {% for i in chartValues %}
-        <div>
-            <p>Color de detalles {{ forloop.counter }}</p>
-            <select id="detailColorSelect{{ i }}" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
-        </div>
-        {% endfor %}
-        <div id="dynamicColorSelectors" style="display: none;"></div> <!-- Este div debe estar inicialmente oculto -->
-        
-        <div>
-            <p>Mostrar etiquetas</p>
-            <select id="labelSelect" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
-        </div>
-        
-        <div>
-            <p>Mostrar leyenda</p>
-            <select id="legendSelect" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md"></select>
-        </div>
-    
-        <div class="flex flex-col w-[19.3rem] border border-gray-500 py-3 pl-2 shadow-md rounded-lg">
-            <p id="widthValueDisplay"></p>
-            <input id="widthSelect" type="range" min="10" max="70" value="35" class="w-72">
-        </div>
-    
-        <div class="flex flex-col w-[19.3rem] border border-gray-500 py-3 pl-2 shadow-md rounded-lg">
-            <p id="detailWidthDisplay"></p>
-            <input id="detailWidthSelect" type="range" min="1" max="40" value="10" class="w-72">
+                {% for i in chartValues %}
+                <div>
+                    <p>Color de detalles {{ forloop.counter }}</p>
+                    <select id="detailColorSelect{{ i }}" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md xl:w-[13rem]"></select>
+                </div>
+                {% endfor %}
+
+                <div id="dynamicColorSelectors" style="display: none;"></div>
+
+                <div>
+                    <p>Mostrar etiquetas</p>
+                    <select id="labelSelect" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md xl:w-[13rem]"></select>
+                </div>
+
+                <div>
+                    <p>Mostrar leyenda</p>
+                    <select id="legendSelect" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md xl:w-[13rem]"></select>
+                </div>
+
+                <div>
+                    <p>Apilar datos</p>
+                    <select id="stackSelect" class="w-[9rem] py-2 px-4 bg-white border rounded-lg text-gray-900 mt-2 shadow-md xl:w-[13rem]"></select>
+                </div>
+
+                <!-- Contenedor para los inputs de rango -->
+
+                    <div class="flex flex-col w-[19.3rem] border border-gray-500 py-3 pl-2 shadow-md rounded-lg mb-4 xl:w-[20rem]">
+                        <p id="widthValueDisplay"></p>
+                        <input id="widthSelect" type="range" min="10" max="70" value="35" class="w-72">
+                    </div>
+
+                    <div class="flex flex-col w-[19.3rem] border border-gray-500 py-3 pl-2 shadow-md rounded-lg mb-4 xl:w-[20rem]">
+                        <p id="detailWidthDisplay"></p>
+                        <input id="detailWidthSelect" type="range" min="1" max="40" value="10" class="w-72">
+                    </div>
+                    
+                    {% for i in chartValues %}
+                    <div class="flex flex-col w-[19.3rem] border border-gray-500 py-3 pl-2 shadow-md rounded-lg mb-4 xl:w-[20rem]">
+                        <p id="varNameDisplay">Nombre de variable {{ forloop.counter }}</p>
+                        <input id="varNameInput{{ i }}" type="text" class="w-72 border-gray-200 border rounded-lg">
+                    </div>
+                    {% endfor %}
+           
+            </form>
         </div>
     </div>
-
-
-
-<!-- AAAAA -->
-        
-
-        </div>
-        </div>
-    </div>
-    </div>
+</body>
 
 
 <script type="text/javascript" src="{% static 'js/chart_customizer.js' %}"></script>   
+<script type="text/javascript" src="{% static 'js/variables_selector.js' %}"></script>   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
 <script src="https://kit.fontawesome.com/1d98ebd11c.js" crossorigin="anonymous"></script>
 </body>

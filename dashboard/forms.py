@@ -10,4 +10,15 @@ class chartTypeForm(forms.Form):
     )
     def clean_Tipo_de_grafico(self):
         data = self.cleaned_data['Tipo_de_grafico']
-        return data.lower()  # Devuelve el valor en minúsculas
+        return data.lower()  
+
+class CSVUploadForm(forms.Form):
+    file = forms.FileField(
+        label="Seleccione un archivo en formato CSV",
+        widget=forms.FileInput(attrs={
+            'id': 'file-upload',  # Atributo ID para el input
+            'class': 'hidden',    # Ocultar el input de archivo
+            'onchange': 'updateFileName(this)'  # Cambia el nombre del archivo
+        })
+    )
+

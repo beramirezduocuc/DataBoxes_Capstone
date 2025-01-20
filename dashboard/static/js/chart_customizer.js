@@ -1,19 +1,21 @@
-
 const get_chart_url = "http://127.0.0.1:8000/dashboard/get_chart/";
-const get_chart_types_url = "http://127.0.0.1:8000/dashboard/get_chart_types/";
-
+const create_chart_url = "http://127.0.0.1:8000/dashboard/create_chart/"
 const chartForm = document.getElementById('chartForm');
 const labelChoice = document.getElementById('labelSelect');
 const widthChoice = document.getElementById('widthSelect');
 const detailWidthChoice = document.getElementById('detailWidthSelect');
 const legendChoice = document.getElementById('legendSelect');
 const chartTypeSelect = document.getElementById('chartTypeSelect'); 
+const stackChoice = document.getElementById('stackSelect');
 
-const chartNumbers = 2;  
+
+let chartNumbers;
 const selectedColor = [];  
 const selectedDetailColor = [];
 const chartColorSelectors = [];
 const detailColorSelectors = [];
+
+
 
 const colors = [
     { value: '#800020', label: 'Rojo' },
@@ -35,7 +37,6 @@ const labelBool = [
 const graphTypes = [
     { value: 'line', label: 'Lineas' },
     { value: 'bar', label: 'Barras' },
-    { value: 'pie', label: 'Pastel' }
 ];
 
 const getRandomColor = () => {
@@ -43,6 +44,8 @@ const getRandomColor = () => {
     const randomColor = filteredColors[Math.floor(Math.random() * filteredColors.length)];
     return randomColor.value;
 };
+
+
 
 const fieldMappings = {
     bar: {
@@ -60,19 +63,16 @@ const fieldMappings = {
         label: true,
         legend: true,
     },
-    pie: {
-        width: false,
-        graphColor: true,
-        detailWidth: false,
-        detailColor: false,
-        label: false,
-        legend: true,
-    },
 };
 
-window.addEventListener("load", async () => {
+
+const fillAdditionalFields = () => {
+    setTimeout(() => {
+        document.getElementById('stackSelect').value = 'false';
+    }, 1);
 
     for (let i = 0; i < chartNumbers; i++) {
+        
         const chartColorSelect = document.getElementById(`chartColorSelect${i}`);
         const detailColorSelect = document.getElementById(`detailColorSelect${i}`);
 
@@ -100,7 +100,7 @@ window.addEventListener("load", async () => {
     };
 
     return selectedColor, selectedDetailColor;
-});
+};
 
 
 const updateFormFields = () => {
@@ -145,6 +145,7 @@ async function populateChartOptions() {
         option.textContent = labelChoice.label;
         labelSelect.append(option);
         legendChoice.append(option.cloneNode(true));
+        stackChoice.append(option.cloneNode(true));
     });
 }
 
@@ -152,15 +153,25 @@ async function populateChartOptions() {
 const getFormValues = () => {
     let selectedColor = [];
     let selectedDetail = [];
+    let selectedNameInput = [];
+    let nombreDefaultVariables = [];
 
     for (let i = 0; i < chartNumbers; i++) {
+        const varNameInput = document.getElementById(`varNameInput${i}`)
         const chartColorSelect = document.getElementById(`chartColorSelect${i}`);
         const detailColorSelect = document.getElementById(`detailColorSelect${i}`)
+        
+        nombreDefaultVariables.push(`Variable ${i}`)
+
         if (chartColorSelect) {
             selectedColor.push(chartColorSelect.value);
         }
         if (detailColorSelect) {
             selectedDetail.push(detailColorSelect.value);
+        }
+        if(varNameInput){
+            
+            selectedNameInput.push(varNameInput.value);
         }
     };
     //esta es la unica parte en la que es necesario reutilizar el for
@@ -172,7 +183,9 @@ const getFormValues = () => {
     let selectedWidth = widthChoice.value;
     let selectedDetailWidth = detailWidthChoice.value;
     let selectedLegend = legendChoice.value === 'true';
+    let selectedStack = stackChoice.value === 'true';    
     
+
     if (selectedColor === 'random') {
         selectedColor = getRandomColor(); 
     }
@@ -192,6 +205,8 @@ const getFormValues = () => {
         selectedWidth,
         selectedDetailWidth,
         selectedLegend,
+        selectedStack,
+        selectedNameInput
     };
 };
 
@@ -208,7 +223,9 @@ chartForm.addEventListener('change', async function () {
 const updateWidthValue = () => {
     widthValueDisplay.textContent = `Ancho de línea: ${widthChoice.value}`;
     detailWidthDisplay.textContent = `Ancho de detalles: ${detailWidthChoice.value}`;
-};
+
+}
+;
 
 
 window.addEventListener("load", async () => {
@@ -221,12 +238,15 @@ window.addEventListener("load", async () => {
         selectedWidth: 15 / 10,
         selectedDetailWidth: 10,
         selectedLegend: true,
+        selectedStack: false,
+        selectedNameInput: "VVVVVVV",
     };
-
+    
+    await initChart(defaultFormData);
+    fillAdditionalFields();
     updateWidthValue();
     populateChartOptions();
     updateFormFields(); 
-    await initChart(defaultFormData);
 });
 
 const getOptionChart = async (formData) => {
@@ -245,15 +265,18 @@ const getOptionChart = async (formData) => {
                 graph_line_width: formData.selectedWidth,
                 graph_detail_width: formData.selectedDetailWidth,
                 graph_legend_show: formData.selectedLegend,
+                graph_stack: formData.selectedStack,
+                graph_variables_name : formData.selectedNameInput
             })
-        });
+        })
 
         const data = await response.json();
-        console.log(data);
-
         if (!response.ok) throw new Error('Error en la respuesta del servidor');
+        const chart = data.chart;
+        const chartNumbersRecieved = data.chartNumbers;
 
-        return data;
+        return {chart, chartNumbersRecieved};
+
     } catch (ex) {
         console.error(ex);
         alert('Ocurrió un error al obtener el gráfico: ' + ex.message);
@@ -264,9 +287,11 @@ const getOptionChart = async (formData) => {
 const initChart = async (formData) => {
     const myChart = echarts.init(document.getElementById("chart"));
     const option = await getOptionChart(formData);
+    
 
     if (option) {
-        myChart.setOption(option);
+        chartNumbers = option.chartNumbersRecieved
+        myChart.setOption(option.chart);
         myChart.resize();
     } else {
         console.error("La opción del gráfico es inválida");
