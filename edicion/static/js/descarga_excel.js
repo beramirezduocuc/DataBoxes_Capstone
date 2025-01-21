@@ -39,7 +39,7 @@ document.getElementById('downloadButton').addEventListener('click', function() {
         ref: 'A1',
         headerRow: true,
         columns: headers.map(header => ({ name: header })),
-        rows: data.slice(1) // Excluir la fila de encabezado ya que está incluida en columns
+        rows: data.slice(1)
     });
 
     //Estilizar la tabla opcionalmente
