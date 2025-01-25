@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'dashboard',
     'tailwind',
     'edicion',
+    'prueba',
     'theme',
     'django_browser_reload',
 ]
