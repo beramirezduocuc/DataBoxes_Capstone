@@ -28,8 +28,13 @@
         lg:ml-9
         xl:mr-6">
         <!--Poner cosas aquí dentro-->
-        
-        <div class="mb-4">
+
+
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+          <h1 class="text-2xl font-bold mb-4">Subir o Generar Excel</h1>
+      
+          <!-- Formulario para subir un archivo -->
+          <div class="mb-4">
             <label class="block text-sm font-medium mb-2">Subir un archivo Excel:</label>
             <input
               type="file"
@@ -42,67 +47,41 @@
           <div class="mb-4">
             <button
               id="generateButton"
-              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
               Generar Excel
             </button>
           </div>
       
-          <!-- Contenedor para mostrar la tabla -->
-          <div id="tableContainer" class="overflow-x-auto">
-            <!-- La tabla se generará dinámicamente aquí -->
+          <div class="mb-4 flex gap-4">
+            <button id="addRow" class="bg-green-500 text-white px-4 py-2 rounded">Añadir Fila</button>
+            <button id="addColumn" class="bg-green-500 text-white px-4 py-2 rounded">Añadir Columna</button>
+            <button id="deleteRow" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Última Fila</button>
+            <button id="deleteColumn" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Última Columna</button>
+            <button id="deleteSpecificRow" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Fila Seleccionada</button>
+            <button id="deleteSpecificColumn" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Columna Seleccionada</button>
           </div>
+
+          <div id="tableContainer" class="overflow-x-auto">
+            <!-- Aquí se generará la tabla -->
         </div>
         
-        <div class="mb-4">
-            <h2 class="text-lg font-bold mb-2">Controles de edición</h2>
-            <div class="flex space-x-2">
-              <button
-                id="addRow"
-                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-              >
-                Añadir Fila
-              </button>
-              <button
-                id="deleteRow"
-                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-              >
-                Eliminar Fila
-              </button>
-              <button
-                id="addColumn"
-                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-              >
-                Añadir Columna
-              </button>
-              <button
-                id="deleteColumn"
-                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-              >
-                Eliminar Columna
-              </button>
-              <button
-                id="addSheet"
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              >
-                Añadir Hoja
-              </button>
-            </div>
-          </div>
-          <div class="mb-4">
-            <button
-              id="downloadButton"
-              class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
-            >
-              Descargar Excel
-            </button>
-          </div>
-          
-          <div class="mb-4">
-            <h2 class="text-lg font-bold mb-2">Hojas del archivo</h2>
-            <div id="sheetButtons" class="flex space-x-2">
-              <!-- Botones dinámicos para alternar hojas -->
-            </div>
-          </div>
+        <div class="mb-4 flex gap-4">
+          <button id="addSheet" class="bg-green-500 text-white px-4 py-2 rounded">Crear Hoja</button>
+          <button id="deleteSheet" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Hoja</button>
+          <select id="sheetSelector" class="px-4 py-2 rounded border">
+            <!-- Aquí aparecerán las hojas disponibles -->
+          </select>
+          <input
+            type="text"
+            id="renameSheetInput"
+            placeholder="Renombrar hoja"
+            class="px-4 py-2 rounded border"
+          />
+          <button id="renameSheet" class="bg-blue-500 text-white px-4 py-2 rounded">Renombrar Hoja</button>
+        </div>
+        
+        <button id="downloadExcel" class="bg-blue-500 text-white px-4 py-2 rounded">Descargar Excel</button>
 
         <!--Scripts-->
         <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.min.js"></script>
