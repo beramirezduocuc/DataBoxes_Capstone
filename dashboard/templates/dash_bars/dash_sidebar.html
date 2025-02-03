@@ -24,24 +24,24 @@
             
             <div class="flex flex-col h-full justify-between text-xl ml-3">
                 <div class="space-y-2">
-                    <a href="{% url 'create_chart' %}" 
+                    <a href="{% url 'dashboard' %}" 
                     class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115">  
                         <div class="flex items-center space-x-4">
-                            <i class="fa-solid fa-plus"></i>
-                            <p>Nuevo gráfico</p>
+                            <i class="fa-solid fa-house"></i>
+                            <p>Inicio</p>
                         </div>
                     </a>
                     
-                    <a href="{% url 'dashboard' %}" class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115">
+                    <a href="{% url 'edicion_create' %}" class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115">
                         <div class="flex items-center space-x-4">
-                            <i class="fa-solid fa-chart-simple"></i>
-                            <p>Gráficos</p>
+                            <i class="fa-solid fa-table"></i>
+                            <p>Crear documento</p>
                         </div>
                     </a>
-                    <a href="#" class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115">
+                    <a href="{% url 'create_chart' %}" class="w-full h-auto py-3 flex hover:text-white hover:text-2xl transition-all duration-200 transform hover:scale-115">
                     <div class="flex items-center space-x-4">
-                        <i class="fa-solid fa-gear"></i>
-                        <p>Configuración</p>
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <p>Crear gráfico</p>
                     </div>
                 </a>
                 </div>

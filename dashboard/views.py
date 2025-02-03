@@ -7,22 +7,23 @@ import requests
 from random import randrange
 import csv
 from .forms import CSVUploadForm
+<<<<<<< HEAD
 
 
 def dashboard(request):
     #esto tiene que llamar a los graficos mas tarde, cloud ping -> cloud_ping_graficos(????)
     #parametros guardados en la nube????????
+=======
+from django.core.files.storage import default_storage
+
+
+def dashboard(request):
+
+>>>>>>> desarrollo_2
     username = request.user.nombre
-    cloud_ping_url = 'https://southamerica-west1-databuckets-437414.cloudfunctions.net/saludar'
-    try:
-        response = requests.get(cloud_ping_url)
-        saludo = response.text 
-    except requests.RequestException as e:
-        saludo = 'error de conexion con cloud'
-        
-    context = {'username' : username,
-                'ola' : saludo}
+    context = {'username' : username}
     return render(request, 'dashboard/dashboard.html', context)
+<<<<<<< HEAD
 def get_chart(request):
     if request.method == 'POST':
         try:
@@ -290,6 +291,16 @@ def get_coin_data(request):
     }
 
     return JsonResponse(context, safe=False)
+=======
+ 
+def create_chart(request):
+    username = request.user.nombre
+    context = {'username' : username}
+    return render(request, 'crud/create_chart.html', context)
+
+def test(request):
+    return render(request, 'test.html')
+>>>>>>> desarrollo_2
 #Cambiar el nombre de este mas tarde a "default_chart" o algo asi
 def line_chart(request):
     return render(request, 'charts/line_chart.html')

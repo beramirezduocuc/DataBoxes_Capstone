@@ -19,6 +19,7 @@ class CSVUploadForm(forms.Form):
             'id': 'file-upload',  
             'class': 'hidden',    
             'onchange': 'updateFileName(this)'  
+
         })
     )
 
