@@ -100,7 +100,7 @@ DATABASES = {
         'PORT': '',
     }
 }
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+#NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
