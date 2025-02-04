@@ -4,6 +4,7 @@
 {% tailwind_preload_css %}
 {% tailwind_css %}
 {% block title %} Home {% endblock title %}
+
 <!DOCTYPE html>
 <html lang="en">
 {% block content %}
@@ -14,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
+
 <div class="h-screen w-screen">
     {% include 'landing/navbar.html' %}  
 
@@ -21,42 +23,41 @@
     <div class="w-full h-2/3 flex overflow-hidden ">
         <div class="h-full flex flex-row flex-nowrap transition-all duration-500 ease-in-out" id="slider-inner">
             
-
             <!-- Slide 1 -->
             <div class="w-full h-full flex-shrink-0 relative">
-                <img src="{% static 'img/corp_img1.jpg' %}" alt="" class="w-full h-full object-cover opacity-80">
+                <img src="{% static 'img/contabilidad4_rescale.jpg' %}" alt="" class="w-full h-full object-cover opacity-80">
                 <div class="w-4/5 h-auto bg-black bg-opacity-40 flex flex-col p-6 pt-3 ml-4 z-10 gap-y-10 text-wrap self-center absolute bottom-10
                             lg:w-3/5 lg:ml-10
                             xl:h-auto 2xl:h-auto">
             
                     <p class="text-white text-4xl font-extrabold
                                 sm:text-5xl">
-                        Decisiones eficientes
+                        Las ventajas de la contabilidad digital
                     </p>
                     <p class="text-white text-xl font-semibold
                                 sm:text-4xl sm:font-normal
                                 2xl:text-5xl">
-                        Cuando sabe lo que su empresa necesita, toma las decisiones correctas.
+                        Sin los problemas ni complicaciones de por medio
                     </p>
                 </div>
-            </div>
-            
+            </div> 
             <!-- Slide 1 -->
+
             <!-- Slide 2 -->
             <div class="w-full h-full flex-shrink-0 relative">
-                <img src="{% static 'img/corp_img2.jpg' %}" alt="" class="w-full h-full object-cover opacity-80">
+                <img src="{% static 'img/contabilidad3_rescale.jpg' %}" alt="" class="w-full h-full object-cover opacity-80">
                 <div class="w-4/5 h-auto bg-black bg-opacity-40 flex flex-col p-6 pt-3 ml-4 z-10 gap-y-10 text-wrap self-center absolute bottom-10
                             lg:w-3/5 lg:ml-10
                             xl:h-auto 2xl:h-auto">
             
                     <p class="text-white text-4xl font-extrabold
                                 sm:text-5xl">
-                        No gaste mas tiempo
+                        Facilite las cuentas de su negocio
                     </p>
                     <p class="text-white text-xl font-semibold
                                 sm:text-4xl sm:font-normal
                                 2xl:text-5xl">
-                        Nosotros procesamos y visualizamos sus datos, mientras usted se enfoca en lo necesario.
+                        Se acabaron los tiempos de caluclar a mano
                     </p>
                 </div>
             </div>
@@ -64,16 +65,49 @@
         </div>
     </div>
     
+    <div class="w-full bg-black bg-opacity-10 pb-20 border-gray-200 border border-opacity-60"> 
+    <div class="w-full -max flex flex-col mx-auto
+    text-center space-y-3 
+    self-center justify-self-center text-wrap items-center">
 
+    <div class="w-full bg-black bg-opacity-10 pb-20 border-gray-200 border border-opacity-60"> 
+        <div class="w-full h-max flex flex-col mx-auto
+        text-center space-y-3 
+        self-center justify-self-center text-wrap items-center">
+    
+        <span class="flex justify-center text-3xl font-extrabold pt-12 w-full self-center">
+            Nuestra misión
+        </span>    
+    
+            <p class="text-2xl before:font-deep-gray-custom w-3/4">
+                Queremos hacer el traspaso de las cuentas de papel a digital mediante el uso de distintas herramientas y tecnología 
+                Usando distintas herramientas hechas para emular las funciones que tienen los programas de contabilidad 
+                para ayudar a las personas que les puede parecer agobiante el cambio a llevar las cuentas de forma digital
+            </p>
+    
+        <span class="flex justify-center text-3xl font-extrabold pt-12 w-full self-center">
+            ¿Como lo hacemos?
+        </span>    
+        <p class="text-2xl font-deep-gray-custom w-3/4">
+            Creamos herramientas que emulan las funciones de los programas de contabilidad pero en una interfaz mas amigable y facil de usar,
+            junto con esto, también facilitamos la creación de graficos y de reportes con la misma facilidad de uso que las otras herramientas.
+        </p>
+            </div>
+        </div>
     <div class="w-full h-max flex flex-col
     xl:w-3/4 xl:mx-auto">
 
+    
+    
         <span class="flex justify-center text-4xl font-extrabold pt-12 w-full self-center text-center">
             ¿Por qué elegir DataBuckets?
-        </span>    
+        </span>
     
+
+    </div>
         <!-- Tarjetas -->
         <div class="w-4/5 text-center py-10 px-5 mt-8 justify-center self-center space-y-3 shadow-none 
+        mx-auto
         xl:flex 
         xl:flex-row 
         xl:w-full 
@@ -85,11 +119,12 @@
             xl:w-1/3
             xl:min-h-full">
             <div class="w-24 h-24 mx-auto bg-orange-200 bg-opacity-20 rounded-full flex justify-center items-center">
-                <i class="fa-solid fa-bullseye text-5xl"></i>
+                <i class="fa-solid fa-clock text-5xl"></i>
             </div>
-            <p class="font-bold text-3xl font-deep-gray-custom">Datos de calidad</p>
-            <p class="text-xl font-gray-custom">Intentamos mejorar la calidad de sus datos en la mayor medida posible, 
-                para siempre tenga la ultima y mas reelevante información</p>
+            <p class="font-bold text-3xl font-deep-gray-custom">Facilidad de uso</p>
+            <p class="text-xl font-gray-custom">Nuestras herramientas simplifican el proceso de anotar datos
+                para que mueva su información del papel a digital rapidamente
+            </p>
         </div>
     
         <!-- Tarjeta #2 -->
@@ -97,10 +132,10 @@
             xl:w-1/3
             xl:min-h-full">
             <div class="w-24 h-24 mx-auto bg-orange-200 bg-opacity-20 rounded-full flex justify-center items-center">
-                <i class="fa-solid fa-chart-simple text-5xl"></i>
+                <i class="fa-solid fa-gift text-5xl"></i>
             </div>
-            <p class="font-bold text-3xl font-deep-gray-custom">Gráficos dinámicos e interactivos</p>
-            <p class="text-xl font-gray-custom">A partir de los datos procesados, ofrecemos un servicio para generar gráficos con distintas opciones de visualización para usar en reportes</p>
+            <p class="font-bold text-3xl font-deep-gray-custom">Sin costo</p>
+            <p class="text-xl font-gray-custom">Comience su proceso de digitalización totalmente gratis. No le pediremos su tarjeta para comenzar</p>
         </div>
     
         <!-- Tarjeta #3 -->
@@ -108,36 +143,41 @@
             xl:w-1/3
             xl:min-h-full">
             <div class="w-24 h-24 mx-auto bg-orange-200 bg-opacity-20 rounded-full flex justify-center items-center">
-                <i class="fa-solid fa-cloud text-5xl"></i>
+                <i class="fa-solid fa-chart-simple text-5xl"></i>
             </div>
-            <p class="font-bold text-3xl font-deep-gray-custom">Integración con API</p>
-            <p class="text-xl font-gray-custom">Servicio de API para recibir los resultados de tus datos directamente en tu aplicación o página web</p>
+            <p class="font-bold text-3xl font-deep-gray-custom">Gráficos</p>
+            <p class="text-xl font-gray-custom">Emita facilmente graficos para visualizar su información de manera mas sencilla</p>
         </div>
     </div>
     
     
         <!-- Texto y botón "Contratar" al final -->
-        <div class="flex flex-col space-y-10 px-7 mb-10 w-full">
+        <div class="flex flex-col space-y-10 px-7 mb-10 w-full pb-20">
             
             <p class="text-center font-extrabold font-deep-gray-custom text-4xl">
-                Contrate DataBuckets para su negocio
+                Comience a usar DataBuckets hoy
             </p>
             <a href="{% url 'user_register' %}" class="self-center w-4/5 h-24">
-            <button class="border border-orange-500 border-opacity-30 w-full h-24 text-center shadow-2xl self-center text-4xl font-black text-orange-500
+            <button class="border border-orange-500 border-opacity-30 w-full h-24 text-center 
+            shadow-2xl self-center text-4xl font-black text-orange-500
             hover:bg-orange-500
             hover:text-white
             transition-all 
             duration-300 t
             ransform hover:scale-105">
-                <p>Contratar</p>
+                <p>Registrarse</p>
             </button>
         </a>
         </div>
     </div>
+
+
     
+
 
 <script src="{% static 'js/slider.js' %}"></script>
 
 
 {% endblock content %}
+
 </html>

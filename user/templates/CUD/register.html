@@ -11,10 +11,11 @@
 </head>
 <body class="h-full w-full flex justify-center">
 
-    <div class="flex min-h-[45rem] h-auto w-3/4 border bg-white self-center justify-center flex-col rounded-lg space-y-3 shadow-2xl
+    <div class="flex min-h-[1rem] h-[40rem] w-3/4 border bg-white self-center justify-center flex-col rounded-lg space-y-3 shadow-2xl
     lg:max-w-[50%]
     xl:max-w-[35%]
     pb-12
+    
     ">
 
         <div class="w-full h-1/4 flex-col flex mb-16 mt-20">
@@ -41,10 +42,10 @@
             <div class="ml-10 mb-2 font-semibold text-xl xl:ml-[10%]">
                 <span>Correo electrónico</span>
             </div>
-            {{ form.email }}
-            {% if form.email.errors %}
+            {{ form.correo }}
+            {% if form.correo.errors %}
             <div class="ml-10 mb-2 text-lg xl:ml-[10%] w-3/4 text-red-500">
-                <p class="text-red-500">{{ form.email.errors }}</p>
+                <p class="text-red-500">{{ form.correo.errors }}</p>
             </div>
             {% endif %}
                 

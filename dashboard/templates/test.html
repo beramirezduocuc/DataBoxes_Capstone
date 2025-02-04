@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
+{% tailwind_css %}<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico con ECharts</title>
+
+</head>
+<body>
+    <body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen space-y-4">
+
+        <!-- Selector de archivo -->
+        <input type="file" id="excelFile" class="block p-2 border rounded-md">
+    
+        <!-- Selector de tipo de gráfico -->
+        <select id="chartTypeSelect" class="p-2 border rounded-md">
+            <option value="bar">Barras</option>
+            <option value="line">Líneas</option>
+        </select>
+
+        <div class="flex flex-col items-center space-y-4">
+            <label for="colorSelector" class="font-semibold text-lg">Selecciona un color:</label>
+            <select id="colorSelector" class="p-2 border rounded-md">
+                <!-- Opciones dinámicas se añadirán aquí -->
+            </select>
+
+            <h2 class="font-semibold text-lg">Selecciona las Variables:</h2>
+            <div id="variableSelector" class="space-y-2">
+                <!-- Checkboxes dinámicos -->
+            </div>
+
+            
+            <div id="comboboxContainer" class="mt-4"></div>
+
+        </div>
+
+        <!-- Selector de columnas -->
+        <div id="columnSelector" class="flex flex-col space-y-2">
+            <p class="font-semibold">Selecciona las columnas:</p>
+            <div id="columnList" class="space-y-2"></div>
+            <button onclick="updateChart()" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                Actualizar Gráfico
+            </button>
+        </div>
+    
+        <div>
+            <label for="labelVisibility">Mostrar Etiquetas:</label>
+            <select id="labelVisibility" class="px-4 py-2 bg-white border rounded-md">
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+    
+        <!-- Combobox para leyenda -->
+        <div>
+            <label for="legendVisibility">Mostrar Leyenda:</label>
+            <select id="legendVisibility" class="px-4 py-2 bg-white border rounded-md">
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+
+            <!-- Slider para el ancho de las columnas -->
+            <div class="flex flex-col space-y-4">
+                <!-- Slider para el ancho de las columnas -->
+                <div>
+                    <label for="columnWidth">Ancho de columnas:</label>
+                    <input type="range" id="columnWidth" min="1" max="50" value="10" class="w-full">
+                    <span id="columnWidthValue">10</span>
+                </div>
+            
+                <!-- Slider para el tamaño de los detalles -->
+                <div>
+                    <label for="detailSize">Tamaño de detalles:</label>
+                    <input type="range" id="detailSize" min="1" max="20" value="4" class="w-full">
+                    <span id="detailSizeValue">4</span>
+                </div>
+            </div>
+
+
+        <!-- Contenedor del gráfico -->
+        <div id="chart" class="w-full h-96 border rounded-md"></div>
+
+    <script type="text/javascript" src="{% static 'js/seleccion_tabla.js' %}"></script>   
+
+</body>
+</html>
