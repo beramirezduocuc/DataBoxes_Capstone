@@ -27,11 +27,8 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 # Navegar a los directorios correspondientes y activar el entorno virtual
-cd ..
-cd venv
-source bin/activate
-cd ..
-cd main
+source venv/bin/activate
+
 
 
 python3 manage.py runserver 
