@@ -14,8 +14,6 @@
     <div class="fixed top-0 left-0  h-full hidden lg:block z-50" id="sidebar">
         {% include 'dash_bars/dash_sidebar.html' %}
     </div>
-   
-<!--Habia un </head> extra aqui, lo dejo anotado en caso de que rompa algo-->
 
     {% block content %}    
     <div class="flex flex-col w-full
@@ -31,44 +29,63 @@
         xl:mr-6">
         <!--Poner cosas aquí dentro-->
 
-        <!-- Formulario de subida de archivos y la validacion del formato -->
-        <form id="uploadForm" class="p-6 bg-white rounded shadow-md w-full max-w-md">
-            <h1 class="text-lg font-bold mb-4">Subir Archivo Excel</h1>
-            <input type="file" id="fileInput" class="block w-full mb-4 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Subir</button>
-        </form>
 
-        <!-- Tabla para mostrar los datos del Excel -->
-        <div class="overflow-auto w-full">
-            <table id="excelTable" class="table-auto w-full bg-white border-collapse border border-gray-200 mt-6">
-                <thead class="bg-gray-50">
-                    <tr id="tableHeader"></tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        </div>
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+          <h1 class="text-2xl font-bold mb-4">Subir o Generar Excel</h1>
+      
+          <!-- Formulario para subir un archivo -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">Subir un archivo Excel:</label>
+            <input
+              type="file"
+              id="fileInput"
+              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-gray-300 file:bg-gray-50 file:text-gray-700"
+            />
+          </div>
+      
+          <!-- Botón para generar un archivo -->
+          <div class="mb-4">
+            <button
+              id="generateButton"
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Generar Excel
+            </button>
+          </div>
+      
+          <div class="mb-4 flex gap-4">
+            <button id="addRow" class="bg-green-500 text-white px-4 py-2 rounded">Añadir Fila</button>
+            <button id="addColumn" class="bg-green-500 text-white px-4 py-2 rounded">Añadir Columna</button>
+            <button id="deleteRow" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Última Fila</button>
+            <button id="deleteColumn" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Última Columna</button>
+            <button id="deleteSpecificRow" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Fila Seleccionada</button>
+            <button id="deleteSpecificColumn" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Columna Seleccionada</button>
+          </div>
 
-        <!-- Botones para añadir filas y columnas -->
-        <div class="flex space-x-4 mt-4">
-            <button id="addRowButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Añadir Fila</button>
-            <button id="addColumnButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Añadir Columna</button>
-            <button id="addSheetButton" class="w-full bg-purple-500 text-white py-2 rounded hover:bg-purple-600 mt-4">Añadir Nueva Hoja</button>
+          <div id="tableContainer" class="overflow-x-auto">
+            <!-- Aquí se generará la tabla -->
         </div>
+        
+        <div class="mb-4 flex gap-4">
+          <button id="addSheet" class="bg-green-500 text-white px-4 py-2 rounded">Crear Hoja</button>
+          <button id="deleteSheet" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Hoja</button>
+          <select id="sheetSelector" class="px-4 py-2 rounded border">
+            <!-- Aquí aparecerán las hojas disponibles -->
+          </select>
+          <input
+            type="text"
+            id="renameSheetInput"
+            placeholder="Renombrar hoja"
+            class="px-4 py-2 rounded border"
+          />
+          <button id="renameSheet" class="bg-blue-500 text-white px-4 py-2 rounded">Renombrar Hoja</button>
+        </div>
+        
+        <button id="downloadExcel" class="bg-blue-500 text-white px-4 py-2 rounded">Descargar Excel</button>
 
-        <select id="sheetSelector" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded mb-4">
-            <!-- Opciones serán generadas dinámicamente -->
-        </select>
-        <!--Boton de descarga, deberia solicitar un nuevo nombre, de no recibir uno ira por defecto-->
-        <div>
-        <button id="downloadButton" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 mt-4 hidden">Descargar archivo</button>
-        </div>
-    </div>
-</div>
-    
-<!-- Scripts -->
-    <script src="{% static 'js/carga_excel.js' %}"></script>
-    <script src="{% static 'js/descarga_excel.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+        <!--Scripts-->
+        <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.min.js"></script>
+        <script src="{% static 'js/subida_excel.js' %}"></script>
 </body>
 {% endblock content %}
 </html>
