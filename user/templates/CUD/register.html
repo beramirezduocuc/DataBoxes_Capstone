@@ -42,10 +42,10 @@
             <div class="ml-10 mb-2 font-semibold text-xl xl:ml-[10%]">
                 <span>Correo electrónico</span>
             </div>
-            {{ form.email }}
-            {% if form.email.errors %}
+            {{ form.correo }}
+            {% if form.correo.errors %}
             <div class="ml-10 mb-2 text-lg xl:ml-[10%] w-3/4 text-red-500">
-                <p class="text-red-500">{{ form.email.errors }}</p>
+                <p class="text-red-500">{{ form.correo.errors }}</p>
             </div>
             {% endif %}
                 
