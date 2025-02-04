@@ -28,84 +28,103 @@
         lg:ml-9
         xl:mr-6">
         <!--Poner cosas aquí dentro-->
+        
+
+    <div class="container mx-auto p-4">
+        <div class="grid grid-cols-1 md:grid-cols-[2fr,1fr] gap-4">
+            <!-- Controles filas y colummnas -->
+            <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+            <p class="text-2xl font-bold mb-4">Control filas y columnas</p>
+
+            <hr class="my-4 border-t border-gray-100">
+            
+            <div class="grid grid-cols-3 gap-4">
+                <!--Filas-->
+                <button id="addRow" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded text-xs">
+                  Añadir Fila
+                </button>
+                <button id="removeRow" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-xs">
+                  Remover Ultima Fila
+                </button>
+                <button id="deleteSelectedRow" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-xs">
+                  Remover Fila Especifica
+                </button>
+
+                <!--Columnas-->
+                <button id="addColumn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded text-xs">
+                    Añadir Columna
+                </button>
+                <button id="removeColumn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-xs">
+                    Remover Ultima Columna 
+                </button>
+                <button id="deleteSelectedColumn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-xs">
+                    Remover Columna Especifica
+                </button>
+                </div>
+              
+            </div>
+
+
+        <!-- Subida/Generacion -->
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+            
+                <!-- Subir archivo -->
+                <div class="mb-4">
+                    <label class="text-2xl font-bold mb-4">Subida/Generacion archivo</label>
+                    <hr class="my-4 border-t border-gray-100">
+                    <input type="file" id="fileInput" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-gray-300 file:bg-gray-50 file:text-gray-700" />
+                  </div>
+                
+                <!-- Buttons container with vertical stacking -->
+                <div class="flex flex-col gap-4">
+                    <button id="generateButton" class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Generar Excel
+                    </button>
+                </div>
+            </div>
+            </div>
+        </div>
+      
+
 
         <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-          <h1 class="text-2xl font-bold mb-4">Editor de Excel</h1>
-  
-          <!-- Subir archivo -->
-          <div class="mb-4">
-              <label class="block text-sm font-medium mb-2">Subir un archivo Excel:</label>
-              <input type="file" id="fileInput" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-gray-300 file:bg-gray-50 file:text-gray-700" />
-          </div>
-  
-          <!-- Botón para generar un archivo -->
-          <div class="mb-4">
-              <button id="generateButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Generar Excel</button>
-          </div>
-
-          <!-- Controles para añadir y eliminar filas y columnas -->
-          <div class="mb-4 flex gap-2">
-
-            <button id="addRow" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                Añadir Fila
-            </button>
-            <button id="addColumn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                Añadir Columna
-            </button>
-
-            <button id="removeRow" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                Eliminar Última Fila
-            </button>
-            <button id="removeColumn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                Eliminar Última Columna
-            </button>
-
-            <button id="deleteSelectedRow" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                Eliminar Fila Seleccionada
-            </button>
-            <button id="deleteSelectedColumn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                Eliminar Columna Seleccionada
-            </button>
-
-          </div>
-
-  
-          <!-- Contenedor para la tabla editable -->
-          <div id="tableContainer" class="overflow-x-auto bg-white shadow rounded-md p-4"></div>
-
-          <button id="downloadExcel" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Descargar Excel
-          </button>
-
+            <h1 class="text-2xl font-bold mb-4">Editor de Excel</h1>
+            
+            <!-- Contenedor de la tabla -->
+            <div id="tableContainer" class="overflow-auto bg-white shadow rounded-md p-4 max-h-[60vh]"></div>
           
-          <!-- Selector de hojas -->
-          <div class="mb-4 flex gap-2">
-            <label for="sheetSelector" class="text-sm font-medium">Seleccionar Hoja:</label>
-            <select id="sheetSelector" class="border px-2 py-1 rounded"></select>
-          </div>
-
-          <!-- Botones para gestionar hojas -->
-          <div class="mb-4 flex gap-2">
-            <button id="addSheet" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Añadir Hoja
-            </button>
-            <button id="renameSheet" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-                Renombrar Hoja
-            </button>
-            <button id="deleteSheet" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                Eliminar Hoja
-            </button>
-          </div>
-
+            <hr class="my-4 border-t border-gray-300">
           
+            <!-- Control hojas -->
+            <div class="flex flex-wrap gap-4 items-center">
+                <button id="addSheet" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Añadir Hoja
+                </button>
+                <button id="renameSheet" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                    Renombrar Hoja
+                </button>
+                <button id="deleteSheet" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    Eliminar Hoja
+                </button>
+            
+                <!-- Selector hoja -->
+                <div class="flex items-center gap-2">
+                    <label for="sheetSelector" class="text-sm font-medium whitespace-nowrap">Seleccionar Hoja:</label>
+                    <select id="sheetSelector" class="border px-2 py-1 rounded"></select>
+                </div>
+                <!-- Descarga -->
+                <button id="downloadExcel" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Descargar Excel
+                </button>
+            </div>
+        </div>
 
 
-
-      </div>
 
         <!--Scripts-->
         <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.min.js"></script>
         <script src="{% static 'js/edicion_excel.js' %}"></script>
+
 </body>
 {% endblock content %}
 </html>

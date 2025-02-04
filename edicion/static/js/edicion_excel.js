@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentSheet.spliceRows(lastRow, 1); 
 
         //Actualizar manualmente la cuenta de filas en ExcelJS
-        currentSheet._rows.pop(); 
+        currentSheet._rows.pop();
 
         renderTable(currentSheet);
     });
